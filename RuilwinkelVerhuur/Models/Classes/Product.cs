@@ -7,5 +7,18 @@ namespace RuilwinkelVerhuur.Models.Classes
 {
     public class Product
     {
+        public int ID;
+
+        public string Name;
+
+        public string Picture;
+
+        public int MaxHuurLengte;
+
+        public bool Availability;
+
+        public int Cost;
+
+        public string Catagory;
     }
 }

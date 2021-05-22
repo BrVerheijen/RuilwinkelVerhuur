@@ -7,5 +7,12 @@ namespace RuilwinkelVerhuur.Models.Classes
 {
     public class User
     {
+        public int ID;
+
+        public string Name;
+
+        public string Email;
+
+        public int WalletID;
     }
 }
