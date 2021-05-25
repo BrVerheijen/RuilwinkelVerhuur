@@ -5,6 +5,76 @@
 
 <div class="text-center">
     <h1 class="display-4">Hallo</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <form asp-action="Index">
+        <p>
+            Title: <input type="text" name="SearchString" placeholder="Product naam" />
+            <input type="submit" value="Zoek" />
+        </p>
+        <p>
+            <input type="checkbox" name="czechbox">
+            <label for="czechbox">Czechbox</label>
+            <input type="checkbox" name="chequebox">
+            <label for="chequebox">Chequebox</label>
+            <!--
+                
+            -->
+        </p>
+    </form>
+
+    <p>
+<!--
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Naam
+                </th>
+                <th>
+                    Afbeelding
+                </th>
+                <th>
+                    Categorie
+                </th>
+                <th>
+                    Prijs
+                </th>
+                <th>
+                    Beschikbaar
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Classes.Product)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Picture)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Availability)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+        -->
+    </p>
+
 </div>
 
