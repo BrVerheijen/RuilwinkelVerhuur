@@ -19,6 +19,6 @@ namespace RuilwinkelVerhuur.Models.Classes
 
         public int Cost;
 
-        public string Catagory;
+        public string Category;
     }
 }
