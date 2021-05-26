@@ -13,7 +13,7 @@ namespace RuilwinkelVerhuur.Models.Classes
 
         public int FactuurID;
 
-        public long StartDate;
+        public string StartDate;
 
         public int HuurLengte;
     }

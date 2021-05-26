@@ -9,7 +9,7 @@ namespace RuilwinkelVerhuur.Models.Classes
     {
         public int ID;
 
-        public int ProductnaarFactuurID;
+        
 
         public int UserID;
 

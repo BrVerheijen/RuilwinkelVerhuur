@@ -1,132 +1,100 @@
-﻿@page
-@model RuilwinkelVerhuur.Views.Home.OrderPageModel
+﻿
+@page
+
+@namespace RuilwinkelVerhuur.Models.Classes
+
+
 @{
+    var factuurlist = new List<Factuur> { };
+    var productnaarfactuurlist = new List<ProductNaarFactuur> { };
+    var productlist = new List<Product> { };
+    int testuser = 0;
+    productnaarfactuurlist.Add(new ProductNaarFactuur { ID = 0, ProductID = 0, FactuurID = 0, StartDate = "1_1_2021", HuurLengte = 5 }) ;
+    productlist.Add(new Product { ID = 0, Name = "test", Availability = true, Category = null, Cost = 5, MaxHuurLengte = 533, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
+    factuurlist.Add(new Factuur { ID = 0, UserID = 0, Date = 31_12_2020});
+    productnaarfactuurlist.Add(new ProductNaarFactuur { ID = 1, ProductID = 1, FactuurID = 0, StartDate = "1_1_2021", HuurLengte = 5 });
+    productlist.Add(new Product { ID = 1, Name = "test1", Availability = true, Category = null, Cost = 5, MaxHuurLengte = 533, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
+    factuurlist.Add(new Factuur { ID = 1, UserID = 0, Date = 31_12_2020 });
+    productnaarfactuurlist.Add(new ProductNaarFactuur { ID = 2, ProductID = 2, FactuurID = 1, StartDate = "1_1_2021", HuurLengte = 5 });
+    productlist.Add(new Product { ID = 2, Name = "test2", Availability = true, Category = null, Cost = 5, MaxHuurLengte = 533, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
 }
 
 <div class="text-center">
-    <h2 class="display-4">Mijn Orders</h2>
-</div>
+    <h1 class="display-4">Mijn Orders</h1>
 
-<div class=" container-fluid my-5 ">
-    <div class="row justify-content-center ">
-        <div class="col-xl-10">
-            <div class="card shadow-lg ">
-                <div >
-                    <div >
-                        <div class="card border-0 ">
-                            <div class="card-header card-2">
-                                <p class="card-text text-muted mt-md-4 mb-2 space">Ordernummer </p>
-                                <hr class="my-2">
-                            </div>
-                            <div class="card-body pt-0">
-                                <div class="row justify-content-between">
-                                    <div class="col-auto col-md-7">
-                                        <div class="media flex-column flex-sm-row">
-                                            <img class=" img-fluid" src="https://i.imgur.com/6oHix28.jpg" width="100" height="100">
-                                            <div class="media-body my-auto">
-                                                <div class="row ">
-                                                    <div class="col-auto">
-                                                        <p class="mb-0"><b>Naam product</b></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><small">Ingangs Datum</small"></p>
-                                    </div>
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><small>Lengte leen</small></p>
-                                    </div>
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><small>Prijs Product</small></p>
-                                    </div>
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><button type="button">Cancel</button></p>
-                                    </div>
-                                </div>
-                                <hr class="my-2">
-                                <div class="row justify-content-between">
-                                    <div class="col-auto col-md-7">
-                                        <div class="media flex-column flex-sm-row">
-                                            <img class=" img-fluid " src="https://i.imgur.com/9MHvALb.jpg" width="100" height="100">
-                                            <div class="media-body my-auto">
-                                                <div class="row ">
-                                                    <div class="col">
-                                                        <p class="mb-0"><b>Naam Product</b></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+    <p>
+        @foreach (var factuur in factuurlist)
+        {
+            @if (factuur.UserID == testuser)
+            {
+            <p>
+               Factuur ID: @factuur.ID
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Naam
+                        </th>
+                        <th>
+                            Afbeelding
+                        </th>
+                        <th>
+                            Prijs
+                        </th>
+                        <th>
+                            Ingangsdatum
+                        </th>
+                        <th>
+                            Huurlengte
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><small>Ingangs Datum</small></p>
-                                    </div>
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><small>Lengte leen</small></p>
-                                    </div>
-                                    <div class="pl-0 flex-sm-col col-auto my-auto">
-                                        <p><small>Prijs product</small></p>
-                                    </div>
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><button type="button">Cancel</button></p>
-                                    </div>
-                                </div>
-                                <hr class="my-2">
-                                <div class="row justify-content-between">
-                                    <div class="col-auto col-md-7">
-                                        <div class="media flex-column flex-sm-row">
-                                            <img class=" img-fluid " src="https://i.imgur.com/6oHix28.jpg" width="100" height="100">
-                                            <div class="media-body my-auto">
-                                                <div class="row ">
-                                                    <div class="col">
-                                                        <p class="mb-0"><b>Naam Product</b></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    @foreach (var productnaarfactuur in productnaarfactuurlist)
+                    {
+                        @if (productnaarfactuur.FactuurID == factuur.ID)
+                        {
+                            @foreach (var product in productlist)
+                            {
 
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><small>Ingangs Datum</small></p>
-                                    </div>
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><small>Lengte leen</small></p>
-                                    </div>
-                                    <div class="pl-0 flex-sm-col col-auto my-auto">
-                                        <p><small>Prijs product</small></p>
-                                    </div>
-                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                        <p><button type="button">Cancel</button></p>
-                                    </div>
-                                </div>
-                                <hr class="my-2">
-                                <div class="row ">
-                                    <div class="col">
-                                        
-                                        
-                                        <div class="row justify-content-between">
-                                            <div class="col-4">
-                                                <p><b>Totaal</b></p>
-                                            </div>
-                                            <div class="flex-sm-col col-auto">
-                                                <p class="mb-1"><b>Prijs totaal</b></p>
-                                            </div>
-                                            <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                                <p><button type="button">Cancel</button></p>
-                                            </div>
-                                        </div>
-                                        <hr class="my-0">
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                @if (product.ID == productnaarfactuur.ProductID)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => product.Name)
+                                        </td>
+                                        <td>
+                                            <img src="@product.Picture" height="150" />
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => product.Cost)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => productnaarfactuur.StartDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => productnaarfactuur.HuurLengte)
+                                        </td>
+                                        <td>
+                                            <button>Annuleer</button>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            }
+                        }
+
+                    }
+                </tbody>
+            </table>
+        }
+        }
+
+        
     </div>
-</div>
+
