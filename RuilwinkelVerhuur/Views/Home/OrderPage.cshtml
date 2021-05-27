@@ -1,0 +1,110 @@
+﻿
+@page
+
+@namespace RuilwinkelVerhuur.Models.Classes
+
+
+@{
+    var factuurlist = new List<Factuur> { };
+    var productnaarfactuurlist = new List<ProductNaarFactuur> { };
+    var productlist = new List<Product> { };
+    int testuser = 0;
+    productnaarfactuurlist.Add(new ProductNaarFactuur { ID = 0, ProductID = 0, FactuurID = 0, StartDate = "1_1_2021", HuurLengte = 5 }) ;
+    productlist.Add(new Product { ID = 0, Name = "test", Availability = true, Category = null, Cost = 5, MaxHuurLengte = 533, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
+    factuurlist.Add(new Factuur { ID = 0, UserID = 0, Date = 31_12_2020});
+    productnaarfactuurlist.Add(new ProductNaarFactuur { ID = 1, ProductID = 1, FactuurID = 0, StartDate = "1_1_2021", HuurLengte = 5 });
+    productlist.Add(new Product { ID = 1, Name = "test1", Availability = true, Category = null, Cost = 5, MaxHuurLengte = 533, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
+    factuurlist.Add(new Factuur { ID = 1, UserID = 0, Date = 31_12_2020 });
+    productnaarfactuurlist.Add(new ProductNaarFactuur { ID = 2, ProductID = 2, FactuurID = 1, StartDate = "1_1_2021", HuurLengte = 5 });
+    productlist.Add(new Product { ID = 2, Name = "test2", Availability = true, Category = null, Cost = 5, MaxHuurLengte = 533, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
+}
+
+<div class="text-center">
+    <style>
+        button.ex1 {
+            margin: 0px 0px 0px 100px;
+        }
+        
+        
+    </style>
+    <h1 class="display-4">Mijn Orders</h1>
+
+
+    <p>
+        @foreach (var factuur in factuurlist)
+        {
+            @if (factuur.UserID == testuser)
+            {
+            <p style="background-color:lightgray;">
+               Factuur ID: @factuur.ID 
+                <button class="ex1">Annuleer</button>
+            </p>
+
+            <table class="table" style="margin: 0px 0px 60px 0px;">
+                <thead>
+                    <tr>
+                        <th>
+                            Naam
+                        </th>
+                        <th>
+                            Afbeelding
+                        </th>
+                        <th>
+                            Prijs
+                        </th>
+                        <th>
+                            Ingangsdatum
+                        </th>
+                        <th>
+                            Huurlengte
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var productnaarfactuur in productnaarfactuurlist)
+                    {
+                        @if (productnaarfactuur.FactuurID == factuur.ID)
+                        {
+                            @foreach (var product in productlist)
+                            {
+
+                                @if (product.ID == productnaarfactuur.ProductID)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => product.Name)
+                                        </td>
+                                        <td>
+                                            <img src="@product.Picture" height="150" />
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => product.Cost)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => productnaarfactuur.StartDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => productnaarfactuur.HuurLengte)
+                                        </td>
+                                        <td>
+                                            <button>Annuleer</button>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            }
+                        }
+
+                    }
+                </tbody>
+            </table>
+            
+        }
+        }
+
+        
+    </div>
+

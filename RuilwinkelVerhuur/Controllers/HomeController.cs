@@ -23,10 +23,15 @@ namespace RuilwinkelVerhuur.Controllers
             return View();
         }
 
+
         public IActionResult CheckoutPage()
         {
             return View();
         }
+         public IActionResult OrderPage()
+         {
+             return View();
+         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
