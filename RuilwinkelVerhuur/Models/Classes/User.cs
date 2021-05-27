@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace RuilwinkelVerhuur.Models.Classes
+{
+    public class User
+    {
+        public int ID;
+
+        public string Name;
+
+        public string Email;
+
+        public int WalletID;
+    }
+}
