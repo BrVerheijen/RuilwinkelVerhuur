@@ -20,6 +20,13 @@
 }
 
 <div class="text-center">
+    <style>
+        button.ex1 {
+            margin: 0px 0px 0px 100px;
+        }
+        
+        
+    </style>
     <h1 class="display-4">Mijn Orders</h1>
 
 
@@ -28,10 +35,12 @@
         {
             @if (factuur.UserID == testuser)
             {
-            <p>
-               Factuur ID: @factuur.ID
+            <p style="background-color:lightgray;">
+               Factuur ID: @factuur.ID 
+                <button class="ex1">Annuleer</button>
             </p>
-            <table class="table">
+
+            <table class="table" style="margin: 0px 0px 60px 0px;">
                 <thead>
                     <tr>
                         <th>
@@ -92,6 +101,7 @@
                     }
                 </tbody>
             </table>
+            
         }
         }
 
