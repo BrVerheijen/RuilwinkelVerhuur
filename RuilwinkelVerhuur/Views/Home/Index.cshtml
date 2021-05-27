@@ -13,7 +13,6 @@
 
 <div class="text-left">
     <h1 class="display-4">Welkom op de verhuurpagina!</h1>
-
     <form asp-action="Index">
         <p>
             <input type="text" name="SearchString" placeholder="Product naam" />
@@ -55,27 +54,27 @@
             <tbody>
                 @foreach (var product in productlist)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => product.Name)
-                    </td>
-                    <td>
-                        <img src="@product.Picture" height="150" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => product.Category)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => product.Cost)
-                    </td>
-                    @if (product.Availability == true)
-                    {
-                        <td>Beschikbaar</td>
-                    }
-                    @if (product.Availability == false) 
-                    {
-                        <td>Niet Beschikbaar</td>
-                    }
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => product.Name)
+                        </td>
+                        <td>
+                            <img src="@product.Picture" height="150" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => product.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => product.Cost)
+                        </td>
+                        @if (product.Availability == true)
+                        {
+                            <td>Beschikbaar</td>
+                        }
+                        @if (product.Availability == false)
+                        {
+                            <td>Niet Beschikbaar</td>
+                        }
                         <td>
                             <a asp-action="Details" asp-route-id="@product.ID">Details</a>
                         </td>
