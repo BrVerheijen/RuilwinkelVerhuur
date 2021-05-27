@@ -33,6 +33,12 @@ namespace RuilwinkelVerhuur.Controllers
              return View();
          }
 
+        [HttpGet]
+        public IActionResult DetailPage(int id)
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
