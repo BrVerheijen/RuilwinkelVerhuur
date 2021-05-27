@@ -46,7 +46,18 @@
                         @Html.DisplayFor(modelItem => product.Cost)                                   
                     </td>
                     <td>
-                        <p><button type="button">Verwijder</button></p>
+                        <button onclick="VerwijderProduct()">Verwijder</button>
+                                <script>
+                                      function VerwijderProduct() {
+                                            var txt;
+                                            var r = confirm("Weet u zeker dat u dit product wilt verwijderen?");
+                                            if (r == true) {
+                                               txt = "Product is  verwijderd";
+                                                    } 
+                                                    
+
+                                           }
+                                 </script>
                     </td>
                 </tr>
                 }
@@ -57,6 +68,18 @@
 
 
         <div class="row mb-5 mt-4 ">
-             <div class="col-md-7 col-lg-6 mx-auto"><button type="button" class="btn btn-block btn-outline-primary btn-lg">CHECK OUT</button></div>
+             <div class="col-md-7 col-lg-6 mx-auto"><button type="button" onclick="CheckOut()" class="btn btn-block btn-outline-primary btn-lg">CHECK OUT</button>
+              <script>
+                    function CheckOut() {
+                                var txt;
+                                var r = confirm("Weet u zeker dat u de bestelling wilt afronden?");
+                                 if (r == true) {
+                                         txt = "Check out is afgerond";
+                                               } 
+                                                    
+
+                                                }
+             </script>
+         </div>
         </div>
 </div>
