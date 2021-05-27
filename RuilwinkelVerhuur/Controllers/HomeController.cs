@@ -23,7 +23,7 @@ namespace RuilwinkelVerhuur.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult OrderPage()
         {
             return View();
         }
