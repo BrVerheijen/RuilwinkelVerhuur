@@ -37,7 +37,19 @@
             {
             <p style="background-color:lightgray;">
                Factuur ID: @factuur.ID 
-                <button class="ex1">Annuleer</button>
+                <button  onclick="CancelOrderFunction()" class="ex1">Annuleer</button>
+                <script>
+                    function CancelOrderFunction() {
+                        var txt;
+                        var r = confirm("Weet u zeker dat u deze order wil verwijderen");
+                        if (r == true) {
+                            txt = "Order is verwijderd";
+                        }
+                        
+                    }
+                </script>
+
+
             </p>
 
             <table class="table" style="margin: 0px 0px 60px 0px;">
@@ -89,7 +101,18 @@
                                             @Html.DisplayFor(modelItem => productnaarfactuur.HuurLengte)
                                         </td>
                                         <td>
-                                            <button>Annuleer</button>
+                                            <button onclick="CancelProductFunction()">Annuleer</button>
+                                            <script>
+                                                function CancelProductFunction() {
+                                                    var txt;
+                                                    var r = confirm("Weet u zeker dat je dit wilt verwijderen");
+                                                    if (r == true) {
+                                                        txt = "Product is  verwijderd";
+                                                    } 
+                                                    
+
+                                                }
+                                            </script>
                                         </td>
                                     </tr>
 
