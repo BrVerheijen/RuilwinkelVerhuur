@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RuilwinkelVerhuur.Models;
+using RuilwinkelVerhuur.Models.Classes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,5 +45,6 @@ namespace RuilwinkelVerhuur.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        
     }
 }
