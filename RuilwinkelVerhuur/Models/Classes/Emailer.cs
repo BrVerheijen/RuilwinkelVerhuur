@@ -13,7 +13,7 @@ namespace RuilwinkelVerhuur.Models.Classes
         public static void MailGenerateTest()
         {
             string messageBody = "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif' width='0' height='0'>";
-            string testmail = "testmail";
+            string testmail = "nathangroenveld1@gmail.com";
             string testsubject = "test123";
             Email(messageBody, testmail, testsubject);
         }
@@ -24,16 +24,16 @@ namespace RuilwinkelVerhuur.Models.Classes
             {
                 MailMessage message = new MailMessage();
                 SmtpClient smtp = new SmtpClient();
-                message.From = new MailAddress("FromMailAddress");
+                message.From = new MailAddress("ruilwinkelverhuur@mail.com");
                 message.To.Add(new MailAddress(toMailAddress));
                 message.Subject = subject;
                 message.IsBodyHtml = true;   
                 message.Body = htmlString;
                 smtp.Port = 587;
-                smtp.Host = "smtp.mailserver.com"; //insert mail server   
+                smtp.Host = "smtp.mail.com"; //insert mail server   
                 smtp.EnableSsl = true;
                 smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential("FromMailAddress", "password");
+                smtp.Credentials = new NetworkCredential("ruilwinkelverhuur@mail.com", "Sleutel123");
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Send(message);
             }
