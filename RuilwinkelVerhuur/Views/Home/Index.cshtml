@@ -75,9 +75,13 @@
                         {
                             <td>Niet Beschikbaar</td>
                         }
-                        <td>
-                            <a asp-action="Details" asp-route-id="@product.ID">Details</a>
-                        </td>
+                    <td>
+                        <a asp-action="Details" asp-controller="DetailController">Details</a>
+                        @using (Html.BeginForm("DetailPage", "Detail", FormMethod.Post))
+                {
+
+                }
+                    </td>
                     </tr>
                 }
             </tbody>
