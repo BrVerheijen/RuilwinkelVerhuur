@@ -9,23 +9,11 @@ namespace RuilwinkelVerhuur.Controllers
 {
     public class DetailController : Controller
     {
-        public IActionResult Index()
+        
+        public ActionResult Index(int id)
         {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Index(Product product)
-        {
-            int ProductID = product.ID;
-            string Name = product.Name;
-            bool Availability = product.Availability;
-            string Category = product.Category;
-            string Picture = product.Picture;
-            int Cost = product.Cost;
-            int MaxHuurLengte = product.MaxHuurLengte;
-
-
+            // var item = GetItemFromId(id);
+            ViewBag.Message = id;
             return View();
         }
     }
