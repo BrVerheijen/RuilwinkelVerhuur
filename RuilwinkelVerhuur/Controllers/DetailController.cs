@@ -13,8 +13,8 @@ namespace RuilwinkelVerhuur.Controllers
         public ActionResult Index(int id)
         {
             // var item = GetItemFromId(id);
-            ViewBag.Message = id;
-            return View();
+            //ViewBag.Message = id;
+            return View(id);
         }
     }
 }

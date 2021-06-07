@@ -7,14 +7,14 @@ namespace RuilwinkelVerhuur.Models.Classes
 {
     public class ProductNaarFactuur
     {
-        public int ID;
+        public int ID { get; set; }
 
-        public int ProductID;
+        public int ProductID { get; set; }
 
-        public int FactuurID;
+        public int FactuurID { get; set; }
 
-        public string StartDate;
+        public string StartDate { get; set; }
 
-        public int HuurLengte;
+        public int HuurLengte { get; set; }
     }
 }
