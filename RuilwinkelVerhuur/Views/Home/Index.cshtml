@@ -5,10 +5,7 @@
 
 @{
     var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
-    var productlist = new List<Product> { };
-    productlist.Add(new Product { ID = 0, Name = "Stoel", Availability = true, Category = "Meubilair", Cost = 5, MaxHuurLengte = 14, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
-    productlist.Add(new Product { ID = 1, Name = "iPad", Availability = false, Category = "Elektronika", Cost = 50, MaxHuurLengte = 14, Picture = "https://www.apple.com/" });
-
+    List<Product> productlist = ProductComm.retrieveList();
 }
 
 
