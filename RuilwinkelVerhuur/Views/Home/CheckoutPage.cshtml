@@ -1,7 +1,52 @@
 ﻿@model RuilwinkelVerhuur.Models.Classes.ProductNaarFactuur
 
+<from method="post" asp-action="Create">
+    <div class="border p-3">
+        <h2 class="text-black-50 pl-3">Plaats Order</h2> 
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="ProductID"></label>
+                </div>
+                <div class="col-4">
+                    <label asp-for="FactuurID"></label>
+                </div>
+                <div class="col-4">
+                    <label asp-for="StartDate"></label>
+                </div>
+                <div class="col-4">
+                    <label asp-for="HuurLengte"></label>
+                </div>
+            </div>
+            <div class="from-group now">
+                <div class="col-4">
+                    <input asp-for="ProductID" class="form-control" />
+                </div>
+                <div class="col-4">
+                    <input asp-for="FactuurID" class="form-control" />
+                </div>
+                <div class="col-4">
+                    <input asp-for="StartDate" class="form-control" />
+                </div>
+                <div class="col-4">
+                    <input asp-for="HuurLengte" class="form-control" />
+                </div>
+            </div>
+            <div class="from-group now">
+                <div class="col-8 text-center row">
+                    <div class="col">
+                        <input type="submit" class="btn btn-info w-75" value="create" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</from>
 
-@namespace RuilwinkelVerhuur.Models.Classes
+
+@*@namespace RuilwinkelVerhuur.Models.Classes
 
 @{
     var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
@@ -84,4 +129,4 @@
             </script>
         </div>
     </div>
-</div>
+</div>*@
