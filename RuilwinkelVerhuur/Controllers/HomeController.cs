@@ -51,13 +51,17 @@ namespace RuilwinkelVerhuur.Controllers
              return View();
          }
 
+
         public IActionResult DeleteFromCart(int id)
         {
             List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
             cart.Remove(id);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            }
 
-
+        [HttpGet]
+        public IActionResult DetailPage(int id)
+        {
             return View();
         }
 

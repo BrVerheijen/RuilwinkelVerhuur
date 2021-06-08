@@ -12,8 +12,8 @@ namespace RuilwinkelVerhuur.Models.Classes
 
         public static void MailGenerateTest()
         {
-            string messageBody = "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif' width='0' height='0'>";
-            string testmail = "nathangroenveld1@gmail.com";
+            string messageBody = "<img src='https://pastepixel.com/image/DMpwPqhCeM4Un9BY6efD.png' width='0' height='0'>";
+            string testmail = "nathangroenveld3@gmail.com";
             string testsubject = "test123";
             Email(messageBody, testmail, testsubject);
         }

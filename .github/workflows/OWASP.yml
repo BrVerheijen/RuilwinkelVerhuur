@@ -1,0 +1,35 @@
+name: .NET and OWASP
+
+on:
+  push:
+    branches: [ ProductionBranch ]
+  pull_request:
+    branches: [ ProductionBranch ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: OWASP ZAP Baseline Scan
+  # You may pin to the exact commit or the version.
+  # uses: zaproxy/action-baseline@3f53f375845c0b410cb54dde95f77516fc4fcf4c
+      uses: zaproxy/action-baseline@v0.4.0
+      with: 
+         target: https://ruilwinkelverhuur.azurewebsites.net/
+    
+
+         
+
