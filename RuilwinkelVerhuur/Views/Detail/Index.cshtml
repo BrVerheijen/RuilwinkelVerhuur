@@ -4,9 +4,13 @@
 
 @{
     var data = ViewBag.Message;
-    Product selectedproduct = ProductComm.retrieveProducts(data);
+    Product selectedproduct = ProductComm.retrieveProduct(data);
 }
 
 <h3>Id: @selectedproduct.ID</h3>
 <h4>Naam: @selectedproduct.Name</h4>
 <p> <img src="@selectedproduct.Picture" height="150" /> </p>
+
+<form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
+    <input type="submit" value="Add to cart!" />
+</form>

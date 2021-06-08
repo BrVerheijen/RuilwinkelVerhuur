@@ -27,6 +27,10 @@ namespace RuilwinkelVerhuur.Controllers
 
         public IActionResult CheckoutPage()
         {
+            List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+
+            ViewBag.cart = cart;
+
             return View();
         }
          public IActionResult OrderPage()

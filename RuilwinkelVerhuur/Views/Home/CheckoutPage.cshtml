@@ -3,10 +3,23 @@
 @namespace RuilwinkelVerhuur.Models.Classes
 
 @{
+
+
+
     var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
+    var productlisttemp = ProductComm.retrieveList();
     var productlist = new List<Product> { };
-    productlist.Add(new Product { ID = 0, Name = "Stoel", Availability = true, Category = "Meubilair", Cost = 5, MaxHuurLengte = 14, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
-    productlist.Add(new Product { ID = 0, Name = "iPad", Availability = false, Category = "Elektronika", Cost = 50, MaxHuurLengte = 14, Picture = "https://www.amac.nl/media/catalog/product/cache/1/image/1800x/040ec09b1e35df139433887a97daa66f/p/r/product-ipad-8th-zilver1_1.jpg" });
+    foreach (var i in ViewBag.cart)
+    {
+        foreach (var j in productlisttemp)
+        {
+            if (i == j.ID)
+            {
+                productlist.Add(j);
+            }
+        }
+    }
+
     int totaalkost = 0;
 }
 
@@ -31,6 +44,7 @@
                 </tr>
             </thead>
             <tbody>
+
                 @foreach (var product in productlist)
                 {
                 <tr>

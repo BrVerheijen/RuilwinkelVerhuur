@@ -17,7 +17,7 @@ namespace RuilwinkelVerhuur.Models.Classes
             return publicProductList;
         }
 
-        public static Product retrieveProducts(int searchid)
+        public static Product retrieveProduct(int searchid)
         {
             List<Product> productlist = ProductComm.retrieveList();
             Product returnproduct = new Product();
