@@ -1,0 +1,76 @@
+﻿@namespace RuilwinkelVerhuur.Models.Classes
+@{
+    var data = ViewBag.category;
+    List<Product> productList = ProductComm.retrieveWithCategory(data);
+}
+
+
+<label>
+    @data
+</label>
+
+@if (productList.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Naam
+                </th>
+                <th>
+                    Afbeelding
+                </th>
+                <th>
+                    Categorie
+                </th>
+                <th>
+                    Prijs
+                </th>
+                <th>
+                    Beschikbaar
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in productList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => product.Name)
+                    </td>
+                    <td>
+                        <img src="@product.Picture" height="150" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => product.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => product.Cost)
+                    </td>
+                    @if (product.Availability == true)
+                    {
+                        <td>Beschikbaar</td>
+                    }
+                    @if (product.Availability == false)
+                    {
+                        <td>Niet Beschikbaar</td>
+                    }
+                    <td>
+                        <form action="@Url.Action("Index", "Detail", new { id = product.ID })">
+                            <input type="submit" value="Details" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else 
+{
+    <br />
+<label>
+    Er zijn op het moment geen producten van deze categorie beschikbaar.
+</label>
+}
+

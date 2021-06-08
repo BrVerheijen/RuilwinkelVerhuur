@@ -24,15 +24,40 @@ namespace RuilwinkelVerhuur.Controllers
             return View();
         }
 
+        public IActionResult InventoryPage(string id)
+        {
+            ViewBag.category = id;
+            return View();
+        }
 
         public IActionResult CheckoutPage()
-        {
+        {            
+            if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
+            {
+                List<int> cart = new List<int>();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                ViewBag.cart = cart;
+            }
+            else
+            {
+                List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+                ViewBag.cart = cart;
+            }            
+
             return View();
         }
          public IActionResult OrderPage()
          {
              return View();
          }
+
+
+        public IActionResult DeleteFromCart(int id)
+        {
+            List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+            cart.Remove(id);
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            }
 
         [HttpGet]
         public IActionResult DetailPage(int id)

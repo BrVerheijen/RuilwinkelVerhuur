@@ -8,7 +8,6 @@ namespace RuilwinkelVerhuur.Models.Classes
     public class Factuur
     {
         public int ID;
-
         
 
         public int UserID;
