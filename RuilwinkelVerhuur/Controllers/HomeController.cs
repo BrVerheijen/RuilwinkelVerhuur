@@ -31,10 +31,18 @@ namespace RuilwinkelVerhuur.Controllers
         }
 
         public IActionResult CheckoutPage()
-        {
-            List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
-
-            ViewBag.cart = cart;
+        {            
+            if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
+            {
+                List<int> cart = new List<int>();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                ViewBag.cart = cart;
+            }
+            else
+            {
+                List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+                ViewBag.cart = cart;
+            }            
 
             return View();
         }
