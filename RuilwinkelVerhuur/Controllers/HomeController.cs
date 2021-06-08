@@ -57,6 +57,7 @@ namespace RuilwinkelVerhuur.Controllers
             List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
             cart.Remove(id);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            return View();
             }
 
         [HttpGet]
