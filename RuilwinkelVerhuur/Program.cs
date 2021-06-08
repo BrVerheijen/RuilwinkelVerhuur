@@ -11,6 +11,13 @@ namespace RuilwinkelVerhuur
 {
     public class Program
     {
+        private string id;
+
+        public Program(string id)
+        {
+            this.id = id;
+        }
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

@@ -3,12 +3,8 @@
 @page
 @namespace RuilwinkelVerhuur.Models.Classes
 
-@{
-    var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
-    var productlist = new List<Product> { };
-    productlist.Add(new Product { ID = 0, Name = "Stoel", Availability = true, Category = "Meubilair", Cost = 5, MaxHuurLengte = 14, Picture = "https://www.horecaoutlet.nl/wp-content/uploads/2018/04/DSC_0062.jpg" });
-    productlist.Add(new Product { ID = 1, Name = "iPad", Availability = false, Category = "Elektronika", Cost = 50, MaxHuurLengte = 14, Picture = "https://www.apple.com/" });
-
+@{    
+    List<String> catList = ProductComm.retrieveCatogories();    
 }
 
 
@@ -16,76 +12,19 @@
 
 
     <h1 class="display-4">Welkom op de verhuurpagina!</h1>
-    <form asp-action="Index">
-        <p>
-            <input type="text" name="SearchString" placeholder="Product naam" />
-            <input type="submit" value="Zoek" />
-        </p>
-        @{foreach (var uniquecategory in catlist)
+
+        @foreach (var uniquecategory in catList)
             {
-                <p>
-                    <input type="checkbox" name=uniquecategory>
-                    <label for=uniquecategory>@Html.DisplayFor(modelItem => uniquecategory)</label>
-                </p>
-            }}
+            <form action="@Url.Action("InventoryPage", "Home", new { id = uniquecategory })">
+                @{string uniquecategoryCap = char.ToUpper(uniquecategory[0]) + uniquecategory.Substring(1);}
 
-    </form>
+                <input type="submit" value=@uniquecategoryCap>        
+            </form>
+            }
 
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Naam
-                    </th>
-                    <th>
-                        Afbeelding
-                    </th>
-                    <th>
-                        Categorie
-                    </th>
-                    <th>
-                        Prijs
-                    </th>
-                    <th>
-                        Beschikbaar
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var product in productlist)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => product.Name)
-                        </td>
-                        <td>
-                            <img src="@product.Picture" height="150" />
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => product.Category)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => product.Cost)
-                        </td>
-                        @if (product.Availability == true)
-                        {
-                            <td>Beschikbaar</td>
-                        }
-                        @if (product.Availability == false)
-                        {
-                            <td>Niet Beschikbaar</td>
-                        }
-                    <td>
-                        <form action="@Url.Action("Index", "Detail", new { id = product.ID })">
-                            <input type="submit" value="Details"/>
-                        </form>
-                    </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
+        
  
     <form action="@Url.Action("Index", "Email")">
         <input type="submit" value="Send test mail" />
