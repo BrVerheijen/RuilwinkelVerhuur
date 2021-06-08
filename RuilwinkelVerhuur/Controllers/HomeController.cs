@@ -24,6 +24,11 @@ namespace RuilwinkelVerhuur.Controllers
             return View();
         }
 
+        public IActionResult InventoryPage(string id)
+        {
+            ViewBag.category = id;
+            return View();
+        }
 
         public IActionResult CheckoutPage()
         {
