@@ -54,10 +54,24 @@ namespace RuilwinkelVerhuur.Controllers
 
         public IActionResult DeleteFromCart(int id)
         {
-            List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
-            cart.Remove(id);
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            return View();
+
+            if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
+            {
+                List<int> cart = new List<int>();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+                cart.Remove(id);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                return View();
+            }
+            else
+            {
+                List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+                cart.Remove(id);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                return View();
+
+            }
             }
 
         [HttpGet]

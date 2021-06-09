@@ -7,9 +7,51 @@
     Product selectedproduct = ProductComm.retrieveProduct(data);
 }
 
-<h3>Id: @selectedproduct.ID</h3>
-<h4>Naam: @selectedproduct.Name</h4>
+
+<head>
+    <!-- for styling -->
+    <style>
+        .title {
+            margin-bottom: 10px;
+            text-align: center;
+            width: 210px;
+            color: green;
+            border: solid black 2px;
+        }
+
+        input[type="submit"] {
+            border-radius: 18px;
+            background-color: #3A1D49;
+            border: solid black 2px;
+            width: 150px;
+            height: 50px;
+            margin: 20px;
+            color: white
+        }
+
+        input[type="text"] {
+            background-color: white;
+            border: solid black 2px;
+            width: 100%
+        }
+    </style>
+</head>
+
+
+<h3>@selectedproduct.Name</h3>
+<h5 style="color:cornflowerblue">@selectedproduct.Cost Punten</h5>
+
+@if (selectedproduct.Availability == true)
+{
+    <h5 style="color:green">Beschikbaar</h5>
+}
+else
+{
+    <h5 style="color:red">Niet Beschikbaar</h5>
+}
+
 <p> <img src="@selectedproduct.Picture" height="150" /> </p>
+<h5>Beschrijving:</h5>
 
 <form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
     <input type="submit" value="Add to cart!" />

@@ -3,30 +3,83 @@
 @page
 @namespace RuilwinkelVerhuur.Models.Classes
 
-@{    
-    List<String> catList = ProductComm.retrieveCatogories();   
+@{
+    List<String> catList = ProductComm.retrieveCatogories();
+
+    int listcounter = 0;
 }
 
+<head>
+    <!-- for styling -->
+    <style>
+        .title {
+            margin-bottom: 10px;
+            text-align: center;
+            width: 210px;
+            color: green;
+            border: solid black 2px;
+        }
 
-<div class="text-left">
+        input[type="submit"] {
+            border-radius: 18px;
+            background-color: #3A1D49;
+            border: solid black 2px;
+            width: 250px;
+            height: 250px;
+            margin: 20px;
+            color: white;
+            font-size: 33px
+        }
+
+        input[type="text"] {
+            background-color: white;
+            border: solid black 2px;
+            width: 100%
+        }
+    </style>
+</head>
 
 
-    <h1 class="display-4">Welkom op de verhuurpagina!</h1>
-
-        @foreach (var uniquecategory in catList)
-            {
-            <form action="@Url.Action("InventoryPage", "Home", new { id = uniquecategory })">
-                @{string uniquecategoryCap = char.ToUpper(uniquecategory[0]) + uniquecategory.Substring(1);}
-
-                <input type="submit" value=@uniquecategoryCap>        
-            </form>
-            }
+<div>
 
 
-    <form action="@Url.Action("Index", "Email")">
-        <input type="submit" value="Send test mail" />
-    </form>
+    <h1 class="display-4" style="color:#3A1D49">Welkom op de verhuurpagina!</h1>
+    <table>
+
+
+        @while (catList.Count() >= listcounter)
+        {
+            <tr>
+                @for (int i = 1; i < 4; i++)
+                {
+
+                    @try
+                    {
+
+                        <td>
+                            @{ var uniquecategory = catList[listcounter];}
+                            <form action="@Url.Action("InventoryPage", "Home", new { id = uniquecategory })">
+                                @{string uniquecategoryCap = char.ToUpper(uniquecategory[0]) + uniquecategory.Substring(1);}
+                                <input type="submit" value=@uniquecategoryCap>
+                            </form>
+                        </td>
+                    }
+                    catch (System.ArgumentOutOfRangeException)
+                    {
+                        i = 4;
+                    }
+                    listcounter++;
+                }
+            </tr>
+        }
+
+
+
+    </table>
+
+
+    @*<form action="@Url.Action("Index", "Email")">
+         <input type="submit" value="Send test mail" />
+     </form>*@
+        
 </div>
-
-
-
