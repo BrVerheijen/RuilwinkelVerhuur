@@ -7,11 +7,8 @@ namespace RuilwinkelVerhuur.Models.Classes
 {
     public class Factuur
     {
-        public int ID;
-        
-
-        public int UserID;
-
-        public long Date;
+        public int ID { get; set; }        
+        public int UserID { get; set; }
+        public long Date { get; set; }        
     }
 }
