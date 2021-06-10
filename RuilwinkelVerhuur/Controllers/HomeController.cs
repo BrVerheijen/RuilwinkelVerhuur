@@ -113,7 +113,10 @@ namespace RuilwinkelVerhuur.Controllers
          {
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
             ViewBag.userID = user.ID;
-            return View(await _context.Factuur.ToListAsync());
+            FactuurViewModel factuurViewModel = new FactuurViewModel();
+            factuurViewModel.FacturenViewModel = await _context.Factuur.ToListAsync();
+            factuurViewModel.ProductNaarFactuurViewModel = await _context.ProductNaarFactuur.ToListAsync();
+            return View(factuurViewModel);
         }
 
 
