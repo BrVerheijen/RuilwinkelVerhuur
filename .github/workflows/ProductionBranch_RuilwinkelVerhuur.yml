@@ -52,5 +52,6 @@ jobs:
       with:
         app-name: 'RuilwinkelVerhuur'
         slot-name: 'production'
+        working-directory: ./RuilwinkelVerhuur
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_7c14852b03db46aebbb816e073b277b6 }}
         package: .
