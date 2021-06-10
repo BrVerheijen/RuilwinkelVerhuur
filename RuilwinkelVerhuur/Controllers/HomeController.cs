@@ -99,6 +99,8 @@ namespace RuilwinkelVerhuur.Controllers
                         _context.SaveChangesAsync();
                     }
 
+                    Emailer.FactuurGenerator(cart, factuur, user);
+
                     return RedirectToAction(nameof(Index));
                 }
             }
