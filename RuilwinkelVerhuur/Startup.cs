@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RuilwinkelVerhuur.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +30,14 @@ namespace RuilwinkelVerhuur
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".RuilwinkelVerhuur.Session";
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromSeconds(60);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
 
             services.AddControllersWithViews();
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=RuilwinkelVerhuur;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
