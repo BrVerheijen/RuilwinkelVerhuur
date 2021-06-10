@@ -1,14 +1,21 @@
-﻿@page
-
-@namespace RuilwinkelVerhuur.Models.Classes
+﻿@namespace RuilwinkelVerhuur.Models.Classes
+@model IEnumerable<RuilwinkelVerhuur.Models.Classes.Factuur>
 
 @{
-
-
 
     var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
     var productlisttemp = ProductComm.retrieveList();
     var productlist = new List<Product> { };
+    int highestID = 0;
+    foreach (var item in Model)
+    {
+        if (item.ID > highestID)
+        {
+            highestID = item.ID;            
+        }
+    }
+
+    highestID++;
     foreach (var i in ViewBag.cart)
     {
         foreach (var j in productlisttemp)
@@ -23,32 +30,33 @@
     int totaalkost = 0;
 }
 
+<h2> @highestID</h2>
 <div class="text-center">
-<div class="row justify-content-start ">
-                            <div class="col"> <img class="irc_mi img-fluid cursor-pointer " src="https://www.ruilwinkelvaals.nl/ruilwinkelvaals.nl/images/ruilwinkel/logo_ruilwinkel_vaalsWEB.jpg" width="70" height="70"> </div>
-                        </div>
+    <div class="row justify-content-start ">
+        <div class="col"> <img class="irc_mi img-fluid cursor-pointer " src="https://www.ruilwinkelvaals.nl/ruilwinkelvaals.nl/images/ruilwinkel/logo_ruilwinkel_vaalsWEB.jpg" width="70" height="70"> </div>
+    </div>
     <h1 class="display-4">Mijn Winkelmandje</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Naam
-                    </th>
-                    <th>
-                        Afbeelding
-                    </th>
-                    <th>
-                        Prijs
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Naam
+                </th>
+                <th>
+                    Afbeelding
+                </th>
+                <th>
+                    Prijs
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
 
-                @foreach (var product in productlist)
-                {
+            @foreach (var product in productlist)
+            {
                 <tr>
-                    
+
                     @{totaalkost = totaalkost + product.Cost;}
                     <td>
                         @Html.DisplayFor(modelItem => product.Name)
@@ -57,7 +65,7 @@
                         <img src="@product.Picture" height="150" />
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => product.Cost)                                   
+                        @Html.DisplayFor(modelItem => product.Cost)
                     </td>
                     <td>
                         <form action="@Url.Action("DeleteFromCart", "Home", new { id = product.ID })" onSubmit="if(!confirm('Wil je zeker het product verwijderen?')){return false;}">
@@ -65,26 +73,31 @@
                         </form>
                     </td>
                 </tr>
-                }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 
-            <p class="mb-1"><b>Totaalprijs: @totaalkost</b></p>
+    <p class="mb-1"><b>Totaalprijs: @totaalkost</b></p>
 
 
-        <div class="row mb-5 mt-4 ">
-             <div class="col-md-7 col-lg-6 mx-auto"><button type="button" onclick="CheckOut()" class="btn btn-block btn-outline-primary btn-lg">CHECK OUT</button>
-              <script>
+    <div class="row mb-5 mt-4 ">
+        <div class="col-md-7 col-lg-6 mx-auto">
+            <form action="@Url.Action("Checkout", "Home", new { id = highestID})" onSubmit="if(!confirm('Weet u zeker dat u de bestelling wilt afronden?')){return false;}">
+                <input type="submit" value="Checkout" />
+            </form>
+
+            @*<button type="button" onclick="CheckOut()" class="btn btn-block btn-outline-primary btn-lg">CHECK OUT</button>
+                <script>
                     function CheckOut() {
-                                var txt;
-                                var r = confirm("Weet u zeker dat u de bestelling wilt afronden?");
-                                 if (r == true) {
-                                         txt = "Check out is afgerond";
-                                               } 
-                                                    
+                        var txt;
+                        var r = confirm("Weet u zeker dat u de bestelling wilt afronden?");
+                        if (r == true) {
+                            txt = "Check out is afgerond";
+                        }
 
-                                                }
-             </script>
-         </div>
+
+                    }
+                </script>*@
         </div>
+    </div>
 </div>

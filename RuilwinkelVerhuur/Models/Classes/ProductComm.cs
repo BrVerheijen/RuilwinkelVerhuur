@@ -7,6 +7,7 @@ namespace RuilwinkelVerhuur.Models.Classes
 {
     public class ProductComm
     {
+        public List<Product> productList = new List<Product>();
         
         public static List<Product> retrieveList()
         {            
@@ -24,7 +25,7 @@ namespace RuilwinkelVerhuur.Models.Classes
             publicProductList.Add(new Product { ID = 10, Name = "Schoenen", Availability = true, Category = "Kleren", Cost = 4, MaxHuurLengte = 14, Picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcRvxi7F1mHliohJ1a3WMpvwcZZU4u6nqeOw&usqp=CAU" });
 
             return publicProductList;
-        }
+        }        
 
         public static Product retrieveProduct(int searchid)
         {
@@ -59,6 +60,32 @@ namespace RuilwinkelVerhuur.Models.Classes
                 }
             }
             return productList;
+        }
+
+        public static bool CheckCartAvailable(List<int> cart)
+        {
+            //TODO ask products to return true or false
+            //List<Product> products = ProductComm.retrieveList();
+            //foreach (int product in cart)
+            //{
+            //    foreach (Product product1 in products)
+            //    {
+            //        if (product.ID == product1.ID)
+            //        {
+            //            if (product.Availability == false)
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        }
+            //    }
+            //}
+            return true;            
+        }
+
+        public static void SetProductsUnavailable(List<int> cart)
+        {
+            //TODO send all the ids to products
         }
     }
 }

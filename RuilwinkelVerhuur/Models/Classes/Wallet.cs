@@ -11,7 +11,7 @@ namespace RuilwinkelVerhuur.Models.Classes
         
         public int ID;
 
-        public int Saldo;
+        public int Saldo { get; set; }
 
 
     }

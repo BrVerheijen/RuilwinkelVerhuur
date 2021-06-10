@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RuilwinkelVerhuur.Models;
 using RuilwinkelVerhuur.Models.Classes;
@@ -8,19 +9,33 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace RuilwinkelVerhuur.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DatabaseContext _context;
+        public HomeController(ILogger<HomeController> logger, DatabaseContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+            if (SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user") == null)
+            {
+                User currentUser = AccountComm.retrieveUser();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "user", currentUser);
+                ViewBag.user = currentUser;
+            }
+            else
+            {
+                User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
+                ViewBag.user = user;
+            }
+
             return View();
         }
 
@@ -29,8 +44,8 @@ namespace RuilwinkelVerhuur.Controllers
             ViewBag.category = id;
             return View();
         }
-
-        public IActionResult CheckoutPage()
+        
+        public async Task<IActionResult> CheckoutPage()
         {            
             if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
             {
@@ -42,14 +57,64 @@ namespace RuilwinkelVerhuur.Controllers
             {
                 List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
                 ViewBag.cart = cart;
-            }            
+            }
 
+            return View(await _context.Factuur.ToListAsync());
+        }
+        
+
+        
+        public  IActionResult Checkout(int id)
+        {
+            User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
+            List<int> cart;
+            Debug.WriteLine(id);
+            if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
+            {
+                cart = new List<int>();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            }
+            else
+            {
+                cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            }
+
+
+
+            if (ProductComm.CheckCartAvailable(cart) && PuntenComm.SubstractPoints(user.WalletID, 0))
+            {
+                ProductComm.SetProductsUnavailable(cart);
+                ViewBag.Succes = true;
+                Factuur factuur = new Factuur { UserID = user.ID, Date = 8787 };
+                if (ModelState.IsValid)
+                {                    
+                    _context.Add(factuur);
+                     _context.SaveChangesAsync();
+
+                    foreach (int productID in cart) 
+                    {
+                        ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = id, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021" };
+                        _context.Add(productNaarFactuur);
+                        _context.SaveChangesAsync();
+                    }
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            else
+            {
+                //pop message niet genoeg punten/producten niet meer beschikbaar
+                ViewBag.Succes = false;
+            }
             return View();
         }
-         public IActionResult OrderPage()
+        public async Task<IActionResult> OrderPage()
          {
-             return View();
-         }
+            User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
+            ViewBag.userID = user.ID;
+            return View(await _context.Factuur.ToListAsync());
+        }
 
 
         public IActionResult DeleteFromCart(int id)
@@ -58,21 +123,18 @@ namespace RuilwinkelVerhuur.Controllers
             if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
             {
                 List<int> cart = new List<int>();
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-                cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
-                cart.Remove(id);
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-                return View();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);                
+                
             }
             else
             {
                 List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
                 cart.Remove(id);
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-                return View();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);             
 
             }
-            }
+            return View();
+        }
 
         [HttpGet]
         public IActionResult DetailPage(int id)

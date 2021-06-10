@@ -3,12 +3,14 @@
 @page
 @namespace RuilwinkelVerhuur.Models.Classes
 
+
 @{
     List<String> catList = ProductComm.retrieveCatogories();
 
     int listcounter = 0;
+    User user = ViewBag.user;
+    
 }
-
 <head>
     <!-- for styling -->
     <style>
@@ -44,6 +46,7 @@
 
 
     <h1 class="display-4" style="color:#3A1D49">Welkom op de verhuurpagina!</h1>
+    <h1>@user.Name </h1>
     <table>
 
 
@@ -79,7 +82,7 @@
 
 
     @*<form action="@Url.Action("Index", "Email")">
-         <input type="submit" value="Send test mail" />
-     </form>*@
-        
+            <input type="submit" value="Send test mail" />
+        </form>*@
+
 </div>

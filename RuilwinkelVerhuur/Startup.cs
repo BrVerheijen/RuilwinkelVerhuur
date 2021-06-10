@@ -30,7 +30,7 @@ namespace RuilwinkelVerhuur
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".RuilwinkelVerhuur.Session";
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromSeconds(60);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
