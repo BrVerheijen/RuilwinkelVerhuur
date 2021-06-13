@@ -101,7 +101,10 @@ namespace RuilwinkelVerhuur.Controllers
 
                     Emailer.FactuurGenerator(cart, factuur, user);
 
-                    return RedirectToAction(nameof(Index));
+                    cart = new List<int>();
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+
+                    //return RedirectToAction(nameof(Index));
                 }
             }
             else
