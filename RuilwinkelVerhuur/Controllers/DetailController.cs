@@ -8,14 +8,15 @@ using RuilwinkelVerhuur.Models.Classes;
 namespace RuilwinkelVerhuur.Controllers
 {
     public class DetailController : Controller
-    {
-        
+    {        
+        //Sends productID to index page of details
         public ActionResult Index(int id)
         {            
             ViewBag.Message = id;
             return View();
         }
 
+        //adds product to cart session if product is not in cart already
         public ActionResult AddToCart(int id)
         {
             if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
