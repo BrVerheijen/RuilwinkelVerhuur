@@ -25,5 +25,5 @@ jobs:
        working-directory: ./RuilwinkelVerhuur
        run: dotnet build --no-restore
      - name: Run Test
-      working-directory: ./UnitTestVerhuur
-      run: dotnet test 
+       working-directory: ./UnitTestVerhuur
+       run: dotnet test 
