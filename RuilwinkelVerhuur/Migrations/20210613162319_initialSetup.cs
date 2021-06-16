@@ -2,7 +2,7 @@
 
 namespace RuilwinkelVerhuur.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,10 +10,10 @@ namespace RuilwinkelVerhuur.Migrations
                 name: "Factuur",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(nullable: false),
-                    Date = table.Column<long>(nullable: false)
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -24,12 +24,12 @@ namespace RuilwinkelVerhuur.Migrations
                 name: "ProductNaarFactuur",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductID = table.Column<int>(nullable: false),
-                    FactuurID = table.Column<int>(nullable: false),
-                    StartDate = table.Column<string>(nullable: true),
-                    HuurLengte = table.Column<int>(nullable: false)
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    FactuurID = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HuurLengte = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

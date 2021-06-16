@@ -22,10 +22,12 @@ namespace RuilwinkelVerhuur.Controllers
             _context = context;
         }
 
+        //Set user when you visit the homepage and the session is empty
         public IActionResult Index()
         {
             if (SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user") == null)
             {
+                //TODO send user back to login
                 User currentUser = AccountComm.retrieveUser();
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "user", currentUser);
                 ViewBag.user = currentUser;
@@ -39,12 +41,14 @@ namespace RuilwinkelVerhuur.Controllers
             return View();
         }
 
+        //send to inventorypage with categoryID
         public IActionResult InventoryPage(string id)
         {
             ViewBag.category = id;
             return View();
         }
         
+        //sends to checkoutpage and gets the cart items form the session
         public async Task<IActionResult> CheckoutPage()
         {            
             if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
@@ -60,15 +64,14 @@ namespace RuilwinkelVerhuur.Controllers
             }
 
             return View(await _context.Factuur.ToListAsync());
-        }
-        
+        }        
 
-        
+        //TODO andere manier om factuur id op te halen
+        //Function that checksout the session cart and makes new database entries
         public  IActionResult Checkout(int id)
         {
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
-            List<int> cart;
-            Debug.WriteLine(id);
+            List<int> cart;            
             if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
             {
                 cart = new List<int>();
@@ -101,7 +104,12 @@ namespace RuilwinkelVerhuur.Controllers
 
                     Emailer.FactuurGenerator(cart, factuur, user);
 
-                    return RedirectToAction(nameof(Index));
+
+                    cart = new List<int>();
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+
+                    //return RedirectToAction(nameof(Index));
+
                 }
             }
             else
@@ -111,38 +119,28 @@ namespace RuilwinkelVerhuur.Controllers
             }
             return View();
         }
+
+        //sends to orderpage and gives acces to both factuur and productnaarfactuur models within the factuurviewmodel
         public async Task<IActionResult> OrderPage()
          {
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
             ViewBag.userID = user.ID;
-            return View(await _context.Factuur.ToListAsync());
+            FactuurViewModel factuurViewModel = new FactuurViewModel();
+            factuurViewModel.FacturenViewModel = await _context.Factuur.ToListAsync();
+            factuurViewModel.ProductNaarFactuurViewModel = await _context.ProductNaarFactuur.ToListAsync();
+            return View(factuurViewModel);
         }
 
-
+        //removes item from session cart
         public IActionResult DeleteFromCart(int id)
-        {
+        {            
+            List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+            cart.Remove(id);
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);            
 
-            if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
-            {
-                List<int> cart = new List<int>();
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);                
-                
-            }
-            else
-            {
-                List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
-                cart.Remove(id);
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);             
-
-            }
+            
             return View();
-        }
-
-        [HttpGet]
-        public IActionResult DetailPage(int id)
-        {
-            return View();
-        }
+        }        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

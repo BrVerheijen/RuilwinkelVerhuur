@@ -9,15 +9,15 @@ using RuilwinkelVerhuur.Models;
 namespace RuilwinkelVerhuur.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210609210435_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210613162319_initialSetup")]
+    partial class initialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "6.0.0-preview.4.21253.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("RuilwinkelVerhuur.Models.Classes.Factuur", b =>

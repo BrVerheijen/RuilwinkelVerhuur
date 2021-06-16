@@ -8,7 +8,7 @@ namespace RuilwinkelVerhuur.Models.Classes
 {
     public class AccountComm
     {
-        //public static User currentUser;
+        //retrieves user information form accountbeheer
         public static User retrieveUser() 
         {            
             //TODO vraag account id op van de gebruiker van de huidige sessie

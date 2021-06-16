@@ -9,6 +9,7 @@ namespace RuilwinkelVerhuur.Models.Classes
     {
         public List<Product> productList = new List<Product>();
         
+        //Retrieves a full list of products from productbeheer
         public static List<Product> retrieveList()
         {            
             List<Product> publicProductList = new List<Product>() { };
@@ -24,9 +25,11 @@ namespace RuilwinkelVerhuur.Models.Classes
             publicProductList.Add(new Product { ID = 9, Name = "Broek", Availability = true, Category = "Kleren", Cost = 6, MaxHuurLengte = 14, Picture = "https://kringloop.nl/wp-content/uploads/2021/03/Broek-McGregor-Rood-Maat-3234-40114972-600x600.jpg" });
             publicProductList.Add(new Product { ID = 10, Name = "Schoenen", Availability = true, Category = "Kleren", Cost = 4, MaxHuurLengte = 14, Picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcRvxi7F1mHliohJ1a3WMpvwcZZU4u6nqeOw&usqp=CAU" });
 
+            //TO DO API request product beheer
             return publicProductList;
         }        
 
+        //returns product with specified id
         public static Product retrieveProduct(int searchid)
         {
             List<Product> productlist = ProductComm.retrieveList();
@@ -36,11 +39,13 @@ namespace RuilwinkelVerhuur.Models.Classes
                 if (product.ID == searchid)
                 {
                     returnproduct = product;
+                    break;
                 }
             }
             return returnproduct;
         }
 
+        //retrieves unique catogories form productbeheer
         public static List<String> retrieveCatogories()
         {
             List<String> catogoryList = new List<String>() { "Elektronica", "Meubilair", "Kleren", "Witgoed", "Lege Categorie" };
@@ -62,6 +67,7 @@ namespace RuilwinkelVerhuur.Models.Classes
             return productList;
         }
 
+        //function that asks productbeheer if the items in the cart are still available
         public static bool CheckCartAvailable(List<int> cart)
         {
             //TODO ask products to return true or false
@@ -83,6 +89,7 @@ namespace RuilwinkelVerhuur.Models.Classes
             return true;            
         }
 
+        //function that tells productbeheer to set items in cart to unavailable
         public static void SetProductsUnavailable(List<int> cart)
         {
             //TODO send all the ids to products

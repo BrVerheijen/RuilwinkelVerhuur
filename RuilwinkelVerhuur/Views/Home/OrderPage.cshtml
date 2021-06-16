@@ -1,40 +1,26 @@
-﻿@namespace RuilwinkelVerhuur.Models.Classes
-@model IEnumerable<RuilwinkelVerhuur.Models.Classes.Factuur>
+﻿@model RuilwinkelVerhuur.Models.Classes.FactuurViewModel
+@using RuilwinkelVerhuur.Models.Classes
+
 
 
 @{
+    var productList = ProductComm.retrieveList();
     int userID = ViewBag.userID;
-    int listcounter = 0;
     var factuurlist = new List<Factuur> { };
-    foreach (var item in Model)
+    foreach (var item in Model.FacturenViewModel)
     {
         if (item.UserID == userID)
         {
             factuurlist.Add(item);
         }
     }
-    
+
 }
 
-<div>
-    <table>
-        @foreach(Factuur factuur in factuurlist)
-        {
-            <form action="@Url.Action("OrderDetailPage", "Home", new { id = factuur.ID})" onSubmit="if(!confirm('Weet u zeker dat u de bestelling wilt afronden?')){return false;}">
-                <input type="submit" value=@factuur.ID />
-            </form>
-        }
-
-        
 
 
 
-    </table>
-</div>   
-
-
-
-@*<div class="text-center">
+<div class="text-center">
     <style>
         button.ex1 {
             margin: 0px 0px 0px 100px;
@@ -43,90 +29,95 @@
     <h1 class="display-4">Mijn Orders</h1>
 
 
-
+    @if (factuurlist.Count() == 0)
+    {
+        <h1>Geen Orders</h1>
+    }
+    else
+    {
         @foreach (var factuur in factuurlist)
         {
 
-    <p style="background-color:lightgray;">
-        Factuur ID: @factuur.ID
-        <button onclick="CancelOrderFunction()" class="ex1">Annuleer</button>
-        <script>
-            function CancelOrderFunction() {
-                var txt;
-                var r = confirm("Weet u zeker dat u deze order wil verwijderen");
-                if (r == true) {
-                    txt = "Order is verwijderd";
-                }
+            <p style="background-color:lightgray;">
+                Factuur ID: @factuur.ID
+                <button onclick="CancelOrderFunction()" class="ex1">Annuleer</button>
+                <script>
+                    function CancelOrderFunction() {
+                        var txt;
+                        var r = confirm("Weet u zeker dat u deze order wil verwijderen");
+                        if (r == true) {
+                            txt = "Order is verwijderd";
+                        }
+
+                    }
+                </script>
 
 
-        </script>
+            </p>
 
+            <table class="table" style="margin: 0px 0px 60px 0px;">
+                <thead>
+                    <tr>
+                        <th>
+                            Naam
+                        </th>
+                        <th>
+                            Afbeelding
+                        </th>
+                        <th>
+                            Prijs
+                        </th>
+                        <th>
+                            Ingangsdatum
+                        </th>
+                        <th>
+                            Huurlengte
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
 
-    </p>
-    }
-    <table class="table" style="margin: 0px 0px 60px 0px;">
-        <thead>
-            <tr>
-                <th>
-                    Naam
-                </th>
-                <th>
-                    Afbeelding
-                </th>
-                <th>
-                    Prijs
-                </th>
-                <th>
-                    Ingangsdatum
-                </th>
-                <th>
-                    Huurlengte
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var productnaarfactuur in productnaarfactuurlist)
+                    @foreach (var item in Model.ProductNaarFactuurViewModel)
                     {
-            @if (productnaarfactuur.FactuurID == factuur.ID)
+                        @if (item.FactuurID == factuur.ID)
                         {
-            @foreach (var product in productlist)
+                            @foreach (var product in productList)
                             {
 
-            @if (product.ID == productnaarfactuur.ProductID)
+                                @if (product.ID == item.ProductID)
                                 {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => product.Name)
-                </td>
-                <td>
-                    <img src="@product.Picture" height="150" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => product.Cost)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => productnaarfactuur.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => productnaarfactuur.HuurLengte)
-                </td>
-                <td>
-                    <button onclick="CancelProductFunction()">Annuleer</button>
-                    <script>
-                        function CancelProductFunction() {
-                            var txt;
-                            var r = confirm("Weet u zeker dat je dit wilt verwijderen");
-                            if (r == true) {
-                                txt = "Product is  verwijderd";
-                            }
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => product.Name)
+                                        </td>
+                                        <td>
+                                            <img src="@product.Picture" height="150" />
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => product.Cost)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.HuurLengte)
+                                        </td>
+                                        <td>
+                                            <button onclick="CancelProductFunction()">Annuleer</button>
+                                            <script>
+                                                function CancelProductFunction() {
+                                                    var txt;
+                                                    var r = confirm("Weet u zeker dat je dit wilt verwijderen");
+                                                    if (r == true) {
+                                                        txt = "Product is  verwijderd";
+                                                    }
 
 
-                        }
-                    </script>
-                </td>
-            </tr>
+                                                }
+                                            </script>
+                                        </td>
+                                    </tr>
 
                                 }
 
@@ -134,12 +125,14 @@
                         }
 
                     }
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+
 
         }
-        }
+    }
 
 
-    </div>*@
+
+</div>
 
