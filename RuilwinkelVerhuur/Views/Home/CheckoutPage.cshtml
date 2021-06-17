@@ -1,6 +1,7 @@
 ﻿@namespace RuilwinkelVerhuur.Models.Classes
 @model IEnumerable<RuilwinkelVerhuur.Models.Classes.Factuur>
 
+
 @{
 
     var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
@@ -68,12 +69,32 @@
                         @Html.DisplayFor(modelItem => product.Cost)
                     </td>
                     <td>
-                        <form action="@Url.Action("DeleteFromCart", "Home", new { id = product.ID })" onSubmit="if(!confirm('Wil je zeker het product verwijderen?')){return false;}">
+                        <form action="@Url.Action("CheckoutPage", "Home")" onSubmit="if (!DeleteCart()) { return false; }">
                             <input type="submit" value="Delete" />
                         </form>
+                        <script>
+                            function DeleteCart()
+                            {
+                                var txt;
+                                var r = confirm("Weet u zeker dat u dit item wilt verwijderen?");
+                                if (r == true) {
+                                    @{ 
+                                        List<int> cartnow = SessionHelper.GetObjectFromJson<List<int>>(Context.Session, "cart");
+                                        cartnow.Remove(product.ID);
+                                        SessionHelper.SetObjectAsJson(Context.Session, "cart", cartnow);
+
+                                    }
+                                    txt = "Succesvol verwijderd";
+
+                                }
+                                return r
+
+
+                            }
+                        </script>
                     </td>
                 </tr>
-            }
+                                        }
         </tbody>
     </table>
 
@@ -82,22 +103,75 @@
 
     <div class="row mb-5 mt-4 ">
         <div class="col-md-7 col-lg-6 mx-auto">
-            <form action="@Url.Action("Checkout", "Home", new { id = highestID})" onSubmit="if(!confirm('Weet u zeker dat u de bestelling wilt afronden?')){return false;}">
+            <form action="@Url.Action("OrderPage", "Home", new { id = highestID})" onSubmit="if(!confirm('Weet u zeker dat u de bestelling wilt afronden?')){return false;}">
                 <input type="submit" value="Checkout" />
             </form>
-
-            @*<button type="button" onclick="CheckOut()" class="btn btn-block btn-outline-primary btn-lg">CHECK OUT</button>
                 <script>
                     function CheckOut() {
                         var txt;
-                        var r = confirm("Weet u zeker dat u de bestelling wilt afronden?");
-                        if (r == true) {
-                            txt = "Check out is afgerond";
+                        var confirmer = false;
+                        var s = confirm("Weet u zeker dat u de bestelling wilt afronden?");
+                        if (s == true) {
+
+                        @{ 
+                            User user = SessionHelper.GetObjectFromJson<User>(Context.Session, "user");
+                            List<int> cart;
+                            if (SessionHelper.GetObjectFromJson<List<int>>(Context.Session, "cart") == null)
+                            {
+                                cart = new List<int>();
+                                SessionHelper.SetObjectAsJson(Context.Session, "cart", cart);
+                            }
+                            else
+                            {
+                                cart = SessionHelper.GetObjectFromJson<List<int>>(Context.Session, "cart");
+                                SessionHelper.SetObjectAsJson(Context.Session, "cart", cart);
+                            }
+
+                            var csconfirmer = false;
+
+                            if (ProductComm.CheckCartAvailable(cart) && PuntenComm.SubstractPoints(user.WalletID, 0))
+                            {
+                                ProductComm.SetProductsUnavailable(cart);
+                                csconfirmer = true;
+                                Factuur factuur = new Factuur { UserID = user.ID, Date = 8787 };
+                                if (ModelState.IsValid)
+                                {
+                                    _context.Add(factuur);
+                                    _context.SaveChangesAsync();
+
+                                    foreach (int productID in cart)
+                                    {
+                                        ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = id, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021" };
+                                        _context.Add(productNaarFactuur);
+                                        _context.SaveChangesAsync();
+                                    }
+
+                                    Emailer.FactuurGenerator(cart, factuur, user);
+
+                                    cart = new List<int>();
+                                    SessionHelper.SetObjectAsJson(Context.Session, "cart", cart);
+
+                                    //return RedirectToAction(nameof(Index));
+                                }
+                            }
                         }
+                        }
+
+                        if (@csconfirmer == true) {
+                            alert("De bestelling is succesvol afgerond!")
+                        }
+                        else if (@csconfirmer == false) {
+                            alert("Er zijn niet beschikbare producten óf u heeft niet genoeg punten!")
+                        }
+
+                            confirmer = @csconfirmer;
+
+
+                        return confirmer
 
 
                     }
-                </script>*@
+                </script>
         </div>
     </div>
 </div>
