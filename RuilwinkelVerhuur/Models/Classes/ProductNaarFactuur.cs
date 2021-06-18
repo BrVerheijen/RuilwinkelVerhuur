@@ -18,6 +18,6 @@ namespace RuilwinkelVerhuur.Models.Classes
 
         public int HuurLengte { get; set; }
 
-        //public int Cost { get; set; }
+        public int Cost { get; set; }
     }
 }

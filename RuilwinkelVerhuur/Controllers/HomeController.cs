@@ -103,18 +103,12 @@ namespace RuilwinkelVerhuur.Controllers
                         {
                             if (productID == product.ID)
                             {
-                                ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021", /*Cost = product.Cost*/};
+                                ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021", Cost = product.Cost };
                                 _context.Add(productNaarFactuur);
                                 await _context.SaveChangesAsync();
                             }
                         }
-                    }
-                    //foreach (int productID in cart) 
-                    //{
-                    //    ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021", Cost = };
-                    //    _context.Add(productNaarFactuur);
-                    //    await _context.SaveChangesAsync();
-                    //}
+                    }                    
 
                     Emailer.FactuurGenerator(cart, factuur, user);
 
@@ -144,7 +138,7 @@ namespace RuilwinkelVerhuur.Controllers
                 if(productNaarFactuur.FactuurID == factuur.ID)
                 {
                     productIDs.Add(productNaarFactuur.ProductID);
-                    //costs += productNaarFactuur.Cost;
+                    costs += productNaarFactuur.Cost;
                     _context.ProductNaarFactuur.Remove(productNaarFactuur);
                     await _context.SaveChangesAsync();
                 }
@@ -165,16 +159,7 @@ namespace RuilwinkelVerhuur.Controllers
             Factuur factuur = await _context.Factuur.FindAsync(productNaarFactuur.FactuurID); // find the factuur that contains our productnaarfactuur
             List<int> productID = new List<int>();
             List<ProductNaarFactuur> productNaarFactuurTable = await _context.ProductNaarFactuur.ToListAsync(); // get productnaarfactuurtable
-            List<ProductNaarFactuur> productNaarFactuurInFactuur = new List<ProductNaarFactuur>();
-            foreach (Product product in products)
-            {
-                if(product.ID == productNaarFactuur.ProductID)
-                {
-                    refundedProduct = product;
-                    productID.Add(refundedProduct.ID);
-                    break;
-                }
-            }
+            List<ProductNaarFactuur> productNaarFactuurInFactuur = new List<ProductNaarFactuur>();        
 
             
             PuntenComm.RefundProduct(refundedProduct.Cost, user.WalletID);
@@ -183,11 +168,12 @@ namespace RuilwinkelVerhuur.Controllers
             await _context.SaveChangesAsync();
             productNaarFactuurTable = await _context.ProductNaarFactuur.ToListAsync();
 
-            foreach (ProductNaarFactuur product1 in productNaarFactuurTable)
+            foreach (ProductNaarFactuur product in productNaarFactuurTable)
             {
-                if (product1.FactuurID == factuur.ID)
+                if (product.FactuurID == factuur.ID)
                 {
-                    productNaarFactuurInFactuur.Add(product1);
+                    productID.Add(product.ProductID);
+                    productNaarFactuurInFactuur.Add(product);
                 }
             }
 
