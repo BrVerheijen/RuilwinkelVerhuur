@@ -68,7 +68,7 @@ namespace RuilwinkelVerhuur.Controllers
 
         //TODO andere manier om factuur id op te halen
         //Function that checksout the session cart and makes new database entries
-        public  IActionResult Checkout(int id)
+        public async Task<IActionResult> Checkout(int punten)
         {
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
             List<int> cart;            
@@ -85,7 +85,7 @@ namespace RuilwinkelVerhuur.Controllers
 
 
 
-            if (ProductComm.CheckCartAvailable(cart) && PuntenComm.SubstractPoints(user.WalletID, 0))
+            if (ProductComm.CheckCartAvailable(cart) && PuntenComm.SubstractPoints(user.WalletID, punten))
             {
                 ProductComm.SetProductsUnavailable(cart);
                 ViewBag.Succes = true;
@@ -93,21 +93,34 @@ namespace RuilwinkelVerhuur.Controllers
                 if (ModelState.IsValid)
                 {                    
                     _context.Add(factuur);
-                     _context.SaveChangesAsync();
+                     await _context.SaveChangesAsync();
 
-                    foreach (int productID in cart) 
+                    List<Factuur> list = await _context.Factuur.ToListAsync();
+                    int lastID = list[list.Count - 1].ID;
+                    foreach (int productID in cart)
                     {
-                        ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = id, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021" };
-                        _context.Add(productNaarFactuur);
-                        _context.SaveChangesAsync();
+                        foreach (Product product in ProductComm.retrieveList())
+                        {
+                            if (productID == product.ID)
+                            {
+                                ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021", /*Cost = product.Cost*/};
+                                _context.Add(productNaarFactuur);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
                     }
+                    //foreach (int productID in cart) 
+                    //{
+                    //    ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021", Cost = };
+                    //    _context.Add(productNaarFactuur);
+                    //    await _context.SaveChangesAsync();
+                    //}
 
                     Emailer.FactuurGenerator(cart, factuur, user);
 
                     cart = new List<int>();
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-
-                    //return RedirectToAction(nameof(Index));
+                    
                 }
             }
             else
@@ -116,6 +129,74 @@ namespace RuilwinkelVerhuur.Controllers
                 ViewBag.Succes = false;
             }
             return View();
+        }
+
+        public async Task<IActionResult> RefundFactuur(int id)
+        {
+            User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user"); // get user form the session
+            Factuur factuur = await _context.Factuur.FindAsync(id); // find factuur with id parameter
+            List<ProductNaarFactuur> productNaarFactuurTable = await _context.ProductNaarFactuur.ToListAsync(); // get productnaarfactuurtable
+            List<Product> products = ProductComm.retrieveList(); // get the list of all products
+            List<int> productIDs = new List<int>();
+            int costs = 0;
+            foreach (ProductNaarFactuur productNaarFactuur in productNaarFactuurTable)
+            {
+                if(productNaarFactuur.FactuurID == factuur.ID)
+                {
+                    productIDs.Add(productNaarFactuur.ProductID);
+                    //costs += productNaarFactuur.Cost;
+                    _context.ProductNaarFactuur.Remove(productNaarFactuur);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            
+            PuntenComm.RefundProduct(costs, user.WalletID);
+            ProductComm.SetProductsAvailable(productIDs);
+            _context.Factuur.Remove(factuur);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> RefundProduct(int id)
+        {
+            User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user"); // get user form the session
+            List<Product> products = ProductComm.retrieveList(); // get the list of all products
+            ProductNaarFactuur productNaarFactuur = await _context.ProductNaarFactuur.FindAsync(id); // find the productnaarfactuur with id parameter
+            Product refundedProduct = new Product();
+            Factuur factuur = await _context.Factuur.FindAsync(productNaarFactuur.FactuurID); // find the factuur that contains our productnaarfactuur
+            List<int> productID = new List<int>();
+            List<ProductNaarFactuur> productNaarFactuurTable = await _context.ProductNaarFactuur.ToListAsync(); // get productnaarfactuurtable
+            List<ProductNaarFactuur> productNaarFactuurInFactuur = new List<ProductNaarFactuur>();
+            foreach (Product product in products)
+            {
+                if(product.ID == productNaarFactuur.ProductID)
+                {
+                    refundedProduct = product;
+                    productID.Add(refundedProduct.ID);
+                    break;
+                }
+            }
+
+            
+            PuntenComm.RefundProduct(refundedProduct.Cost, user.WalletID);
+            ProductComm.SetProductsAvailable(productID);
+            _context.ProductNaarFactuur.Remove(productNaarFactuur);
+            await _context.SaveChangesAsync();
+            productNaarFactuurTable = await _context.ProductNaarFactuur.ToListAsync();
+
+            foreach (ProductNaarFactuur product1 in productNaarFactuurTable)
+            {
+                if (product1.FactuurID == factuur.ID)
+                {
+                    productNaarFactuurInFactuur.Add(product1);
+                }
+            }
+
+            if(productNaarFactuurInFactuur.Count == 0)
+            {
+                _context.Factuur.Remove(factuur);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
         }
 
         //sends to orderpage and gives acces to both factuur and productnaarfactuur models within the factuurviewmodel

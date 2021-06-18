@@ -22,7 +22,7 @@ namespace RuilwinkelVerhuur.Models.Classes
         }
 
         //Send request to puntenbeheer to add cost to wallet with walletID
-        public static bool RefundProduct(ProductNaarFactuur product, int cost, int walletID)
+        public static bool RefundProduct(int cost, int walletID)
         {
             //if(product.StartDate < current date)
             //TODO Refund points and set product to available
