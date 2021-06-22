@@ -103,7 +103,7 @@ namespace RuilwinkelVerhuur.Controllers
                         {
                             if (productID == product.ID)
                             {
-                                ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = productID, HuurLengte = 7, StartDate = "10/06/2021", Cost = product.Cost };
+                                ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = productID, HuurLengte = 7, StartDate = DateTime.UtcNow.ToShortDateString(), Cost = product.Cost };
                                 _context.Add(productNaarFactuur);
                                 await _context.SaveChangesAsync();
                             }
