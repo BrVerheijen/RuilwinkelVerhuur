@@ -94,6 +94,14 @@ namespace RuilwinkelVerhuur.Models.Classes
         {
             //TODO send all the ids to products
         }
+
+        public static void SetProductsAvailable(List<int> order)
+        {
+            foreach (int productID in order)
+            {
+                //TODO send ProductID
+            }
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 ﻿
 @namespace RuilwinkelVerhuur.Models.Classes
-
+@model RuilwinkelVerhuur.Models.Classes.Datepicker
 
 @{
     var data = ViewBag.Message;
@@ -52,6 +52,17 @@ else
 
 <p> <img src="@selectedproduct.Picture" height="150" /> </p>
 <h5>Beschrijving:</h5>
+<p>
+    <h5>Selecteer de huurlengte in dagen:</h5>
+    <select asp-items="@(new SelectList(ViewBag.Dropdown))"></select>
+</p>
+
+@*@using (Html.BeginForm())
+{
+    <br/>
+    @Html.EditorFor(model => model.Date, new { htmlAttributes = new {@class="datepicker" } })
+}*@
+
 
 <form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
     <input type="submit" value="Add to cart!" />

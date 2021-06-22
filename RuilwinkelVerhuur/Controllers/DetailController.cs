@@ -8,11 +8,14 @@ using RuilwinkelVerhuur.Models.Classes;
 namespace RuilwinkelVerhuur.Controllers
 {
     public class DetailController : Controller
-    {        
+    {
         //Sends productID to index page of details
+        public List<int> dropdownList = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+
         public ActionResult Index(int id)
         {            
             ViewBag.Message = id;
+            ViewBag.Dropdown = dropdownList;
             return View();
         }
 

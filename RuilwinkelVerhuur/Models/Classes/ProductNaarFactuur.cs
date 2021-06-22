@@ -16,6 +16,8 @@ namespace RuilwinkelVerhuur.Models.Classes
         public int FactuurID { get; set; }        
         public string StartDate { get; set; }
 
-        public int HuurLengte { get; set; }        
+        public int HuurLengte { get; set; }
+
+        public int Cost { get; set; }
     }
 }
