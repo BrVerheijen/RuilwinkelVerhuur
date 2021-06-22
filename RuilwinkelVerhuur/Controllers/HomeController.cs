@@ -122,7 +122,8 @@ namespace RuilwinkelVerhuur.Controllers
                 //pop message niet genoeg punten/producten niet meer beschikbaar
                 ViewBag.Succes = false;
             }
-            return View();
+            return RedirectToAction("OrderPage", "Home");
+            
         }
 
         public async Task<IActionResult> RefundFactuur(int id)
@@ -201,11 +202,11 @@ namespace RuilwinkelVerhuur.Controllers
         {            
             List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
             cart.Remove(id);
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);            
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
 
-            
-            return View();
-        }        
+
+            return RedirectToAction("CheckoutPage", "Home");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
