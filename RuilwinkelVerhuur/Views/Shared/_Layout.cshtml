@@ -1,4 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@namespace RuilwinkelVerhuur.Models.Classes
+
+@{ 
+    int walletcontent;
+
+    if (SessionHelper.GetObjectFromJson<int>(Context.Session, "wallet") == 0)
+    {
+        User user = AccountComm.retrieveUser();
+        walletcontent = PuntenComm.RetrieveBalance(user.ID);
+        SessionHelper.SetObjectAsJson(Context.Session, "wallet", walletcontent);
+    }
+    else
+    {
+        walletcontent = SessionHelper.GetObjectFromJson<int>(Context.Session, "wallet");
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,6 +41,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="OrderPage">Orders</a>
 
+                        </li>
+                        <li>
+                            <p class="text-info">@walletcontent punten</p>
                         </li>
                     </ul>
                 </div>

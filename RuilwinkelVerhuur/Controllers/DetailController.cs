@@ -46,7 +46,7 @@ namespace RuilwinkelVerhuur.Controllers
 
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
-            return View();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
