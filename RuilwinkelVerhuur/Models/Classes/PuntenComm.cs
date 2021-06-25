@@ -1,38 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace RuilwinkelVerhuur.Models.Classes
 {
     public class PuntenComm
     {
-        //Retrieve wallet balance form puntenbeheer with wallet id number
-        public static int RetrieveBalance(int walletID)
+        static HttpClient client = new HttpClient();
+
+        public static bool Error;
+        public int AccountID { get; set; }
+
+        public int Points { get; set; }
+
+        //Send request to puntenbeheer to subtract cost form user with userID
+        public static async Task<Uri> SubstractPoints(int userID, int cost)
         {
-            //TODO ask punten for saldo based obn walletID
-            return 35;
+            PuntenComm obj = new() { AccountID = userID, Points = cost};
+            string json = JsonSerializer.Serialize(obj);            
+            HttpResponseMessage response = await client.PutAsJsonAsync("https://devopspuntenbeheer.azurewebsites.net/huren/{{AccountID}}", obj);
+            Error = false;
+            try 
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException)
+            {
+                Error = true;
+                return response.Headers.Location;
+            }
+            
+            return response.Headers.Location;
         }
 
-        //Send request to puntenbeheer to subtract cost form wallet with walletID
-        public static bool SubstractPoints(int walletID, int cost)
+        //Send request to puntenbeheer to add cost to user with userID
+        public static async Task<Uri> AddPoints(int cost, int userID)
         {
-            //ask punten to substract x points
-            return true;
-        }
-
-        //Send request to puntenbeheer to add cost to wallet with walletID
-        public static bool RefundProduct(int cost, int walletID)
-        {
-            //if(product.StartDate < current date)
-            //TODO Refund points and set product to available
-            return true;
-        }
-
-        //Send request to add points according to all products within factuur to wallet with walletID
-        public static bool RefundOrder(Factuur order, int walletID)
-        {
-            return true;
-        }
+            PuntenComm obj = new() { AccountID = userID, Points = cost };
+            string json = JsonSerializer.Serialize(obj);
+            HttpResponseMessage response = await client.PutAsJsonAsync("https://devopspuntenbeheer.azurewebsites.net/intakeproducten/{{AccountID}}", obj);
+            response.EnsureSuccessStatusCode();
+            return response.Headers.Location;
+        }        
     }
 }
