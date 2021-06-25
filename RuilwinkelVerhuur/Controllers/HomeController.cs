@@ -51,15 +51,15 @@ namespace RuilwinkelVerhuur.Controllers
         //sends to checkoutpage and gets the cart items form the session
         public async Task<IActionResult> CheckoutPage()
         {            
-            if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
+            if (SessionHelper.GetObjectFromJson<List<List<string>>>(HttpContext.Session, "cart") == null)
             {
-                List<int> cart = new List<int>();
+                List<List<string>> cart = new List<List<string>>();
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
                 ViewBag.cart = cart;
             }
             else
             {
-                List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+                List<List<string>> cart = SessionHelper.GetObjectFromJson<List<List<string>>>(HttpContext.Session, "cart");
                 ViewBag.cart = cart;
             }
 
@@ -71,15 +71,15 @@ namespace RuilwinkelVerhuur.Controllers
         public async Task<IActionResult> Checkout(int punten)
         {
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
-            List<int> cart;            
-            if (SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart") == null)
+            List<List<string>> cart;            
+            if (SessionHelper.GetObjectFromJson<List<List<string>>>(HttpContext.Session, "cart") == null)
             {
-                cart = new List<int>();
+                cart = new List<List<string>>();
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             else
             {
-                cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
+                cart = SessionHelper.GetObjectFromJson<List<List<string>>>(HttpContext.Session, "cart");
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
 
@@ -89,7 +89,7 @@ namespace RuilwinkelVerhuur.Controllers
             {
                 ProductComm.SetProductsUnavailable(cart);
                 ViewBag.Succes = true;
-                Factuur factuur = new Factuur { UserID = user.ID, Date = 8787 };
+                Factuur factuur = new Factuur { UserID = user.ID, Date = DateTime.Now.ToShortDateString() };
                 if (ModelState.IsValid)
                 {                    
                     _context.Add(factuur);
@@ -97,22 +97,22 @@ namespace RuilwinkelVerhuur.Controllers
 
                     List<Factuur> list = await _context.Factuur.ToListAsync();
                     int lastID = list[list.Count - 1].ID;
-                    foreach (int productID in cart)
+                    foreach (List<string> productInfo in cart)
                     {
                         foreach (Product product in ProductComm.retrieveList())
                         {
-                            if (productID == product.ID)
+                            if (Int32.Parse(productInfo[0]) == product.ID)
                             {
-                                ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = productID, HuurLengte = 7, StartDate = DateTime.UtcNow.ToShortDateString(), Cost = product.Cost };
+                                ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = Int32.Parse(productInfo[0]), HuurLengte = Int32.Parse(productInfo[2]), StartDate = productInfo[1], Cost = product.Cost };
                                 _context.Add(productNaarFactuur);
                                 await _context.SaveChangesAsync();
                             }
                         }
                     }                    
 
-                    Emailer.FactuurGenerator(cart, factuur, user);
+                    //Emailer.FactuurGenerator(cart, factuur, user);
 
-                    cart = new List<int>();
+                    cart = new List<List<string>>();
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
                     
                 }
@@ -198,10 +198,17 @@ namespace RuilwinkelVerhuur.Controllers
 
         //removes item from session cart
         public IActionResult DeleteFromCart(int id)
-        {            
-            List<int> cart = SessionHelper.GetObjectFromJson<List<int>>(HttpContext.Session, "cart");
-            cart.Remove(id);
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);            
+        {
+            List <List<string>> cart = SessionHelper.GetObjectFromJson<List<List<string>>>(HttpContext.Session, "cart");
+            foreach(var item in cart)
+            {
+                if (Int32.Parse(item[0]) == id)
+                {
+                    cart.Remove(item);
+                    break;
+                }
+            }            
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);      
 
             
             return View();

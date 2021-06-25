@@ -5,6 +5,10 @@
 @{
     var data = ViewBag.Message;
     Product selectedproduct = ProductComm.retrieveProduct(data);
+    List<SelectListItem> l1 = new List<SelectListItem>();
+    l1.Add(new SelectListItem() { Text = "1", Value = "1" });
+    l1.Add(new SelectListItem() { Text = "2", Value = "2" });
+    List<int> l2 = ViewBag.Dropdown;
 }
 
 
@@ -54,16 +58,56 @@ else
 <h5>Beschrijving:</h5>
 <p>
     <h5>Selecteer de huurlengte in dagen:</h5>
-    <select asp-items="@(new SelectList(ViewBag.Dropdown))"></select>
+    @Html.DropDownList("LoanLength", l1, "Selecteer de huurlengte in dagen");
+    @*<select asp-items="@(new SelectList(ViewBag.Dropdown))"></select>*@
 </p>
 
-@*@using (Html.BeginForm())
+@using (Html.BeginForm())
 {
-    <br/>
-    @Html.EditorFor(model => model.Date, new { htmlAttributes = new {@class="datepicker" } })
-}*@
+<div class="form-horizontal col-md-6">
+    <div class="form-group">
+        @Html.LabelFor(model => model.Date, new { htmlAttributes = new { @class = "control-label" } })
+        @Html.TextBoxFor(model => model.Date, new { @class = "from-control mydatepicker", @placeholder = "dd.mm.yy" })
+    </div>
+</div>
+       
+}
 
+<link href="~/lib/jqueryui/themes/blitzer/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts
+{
+
+
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(function () { // will trigger when the document is ready
+            //Initialise all datepickers whose class name are mydatepicker
+            // Display them with a button which containes a small calendar icon.
+            $(".mydatepicker")
+                .wrap('<div class="input-group">')
+                .datepicker({
+                    dateFormat: "dd.mm.yy",
+                    changeYear: true,
+                    yearRange: "-0:+1",//year selection is possible from starting 0 years before now
+                    showOn: "both"
+                })
+                .next("button").button({
+                    icons: { primary: "ui-icon-calendar" },
+                    label: "Select Date",
+                    text: false
+                })
+                .addClass("btn btn-default")
+                .wrap('<span class="input-group-btn">')
+                .find('.ui-button-text')
+                .css({
+                    'visibility': 'hidden',
+                    'display': 'inline'
+                });
+        });
+    </script>
+}
 
 <form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
-    <input type="submit" value="Add to cart!" />
+    <input type="submit" value="Toevoegen aan winkelmandje" />
 </form>
+

@@ -7,11 +7,11 @@
     var productlisttemp = ProductComm.retrieveList();
     var productlist = new List<Product> { };
     
-    foreach (var i in ViewBag.cart)
+    foreach (List<String> i in ViewBag.cart)
     {
         foreach (var j in productlisttemp)
         {
-            if (i == j.ID)
+            if (Int32.Parse(i[0]) == j.ID)
             {
                 productlist.Add(j);
             }

@@ -68,7 +68,7 @@ namespace RuilwinkelVerhuur.Models.Classes
         }
 
         //function that asks productbeheer if the items in the cart are still available
-        public static bool CheckCartAvailable(List<int> cart)
+        public static bool CheckCartAvailable(List<List<string>> cart)
         {
             //TODO ask products to return true or false
             //List<Product> products = ProductComm.retrieveList();
@@ -90,14 +90,14 @@ namespace RuilwinkelVerhuur.Models.Classes
         }
 
         //function that tells productbeheer to set items in cart to unavailable
-        public static void SetProductsUnavailable(List<int> cart)
+        public static void SetProductsUnavailable(List<List<string>> cart)
         {
             //TODO send all the ids to products
         }
 
         public static void SetProductsAvailable(List<int> order)
         {
-            foreach (int productID in order)
+            foreach (var id in order)
             {
                 //TODO send ProductID
             }

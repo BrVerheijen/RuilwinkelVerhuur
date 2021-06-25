@@ -11,6 +11,6 @@ namespace RuilwinkelVerhuur.Models.Classes
         [Key]
         public int ID { get; set; }       
         public int UserID { get; set; }
-        public long Date { get; set; }        
+        public string Date { get; set; }        
     }
 }
