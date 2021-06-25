@@ -12,7 +12,7 @@ namespace RuilwinkelVerhuur.Models.Classes
         public static User retrieveUser() 
         {            
             //TODO vraag account id op van de gebruiker van de huidige sessie
-            User currentUser = new User(1, "Billy", "nathangroenveld3@gmail.com", 1);
+            User currentUser = new User(1, "Billy", "nathangroenveld3@gmail.com");
             return currentUser;     
         }
     }

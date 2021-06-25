@@ -11,9 +11,7 @@ namespace RuilwinkelVerhuur.Models.Classes
 
         public string Name { get; set; }
 
-        public string Picture { get; set; }
-
-        public int MaxHuurLengte { get; set; }
+        public string Picture { get; set; }        
 
         public bool Availability { get; set; }
 

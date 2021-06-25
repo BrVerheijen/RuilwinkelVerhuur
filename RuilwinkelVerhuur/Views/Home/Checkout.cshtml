@@ -4,4 +4,15 @@
 @{
 }
 
-<meta http-equiv="Refresh" content="0; URL=@Url.Action("OrderPage", "Home")" />
+@if(!ViewBag.Producten)
+{
+    <h1>producten niet beschikbaar</h1>
+}
+else if(!ViewBag.Punten)
+{
+    <h1>niet genoeg punten </h1>
+}
+else
+{
+    <meta http-equiv="Refresh" content="0; URL=@Url.Action("OrderPage", "Home")" />
+}

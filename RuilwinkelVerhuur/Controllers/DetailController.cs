@@ -26,7 +26,12 @@ namespace RuilwinkelVerhuur.Controllers
             
             if (SessionHelper.GetObjectFromJson<List<List<string>>>(HttpContext.Session, "cart") == null)
             {
-                List<List<string>> cart = new List<List<string>>();                
+                List<List<string>> cart = new List<List<string>>();
+                List<string> itemInfo = new List<string>();
+                itemInfo.Add(id.ToString());
+                itemInfo.Add("30/06/2021");
+                itemInfo.Add("1");
+                cart.Add(itemInfo);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             else

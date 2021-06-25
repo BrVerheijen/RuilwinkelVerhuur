@@ -7,12 +7,11 @@ namespace RuilwinkelVerhuur.Models.Classes
 {
     public class User
     {
-        public User(int id, string name, string email, int walletID)
+        public User(int id, string name, string email)
         {
             ID = id;
             Name = name;
-            Email = email;
-            WalletID = walletID;
+            Email = email;            
         }
 
         public int ID;
@@ -20,7 +19,6 @@ namespace RuilwinkelVerhuur.Models.Classes
         public string Name;
 
         public string Email;
-
-        public int WalletID;
+        
     }
 }

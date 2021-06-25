@@ -68,8 +68,10 @@ namespace RuilwinkelVerhuur.Controllers
 
         //TODO andere manier om factuur id op te halen
         //Function that checksout the session cart and makes new database entries
-        public async Task<IActionResult> Checkout(int punten)
+        public async Task<IActionResult> Checkout(int id)
         {
+            ViewBag.Punten = false;
+            ViewBag.Producten = false;
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
             List<List<string>> cart;            
             if (SessionHelper.GetObjectFromJson<List<List<string>>>(HttpContext.Session, "cart") == null)
@@ -84,44 +86,44 @@ namespace RuilwinkelVerhuur.Controllers
             }
 
 
-
-            if (ProductComm.CheckCartAvailable(cart) && PuntenComm.SubstractPoints(user.WalletID, punten))
+            if (ProductComm.CheckCartAvailable(cart))
             {
-                ProductComm.SetProductsUnavailable(cart);
-                ViewBag.Succes = true;
-                Factuur factuur = new Factuur { UserID = user.ID, Date = DateTime.Now.ToShortDateString() };
-                if (ModelState.IsValid)
-                {                    
-                    _context.Add(factuur);
-                     await _context.SaveChangesAsync();
-
-                    List<Factuur> list = await _context.Factuur.ToListAsync();
-                    int lastID = list[list.Count - 1].ID;
-                    foreach (List<string> productInfo in cart)
+                ViewBag.Producten = true;
+                await PuntenComm.SubstractPoints(user.ID, id);
+                if (!PuntenComm.Error)
+                {
+                    ProductComm.SetProductsUnavailable(cart);
+                    ViewBag.Punten = true;
+                    Factuur factuur = new Factuur { UserID = user.ID, Date = DateTime.Now.ToShortDateString() };
+                    if (ModelState.IsValid)
                     {
-                        foreach (Product product in ProductComm.retrieveList())
+                        _context.Add(factuur);
+                        await _context.SaveChangesAsync();
+
+                        List<Factuur> list = await _context.Factuur.ToListAsync();
+                        int lastID = list[list.Count - 1].ID;
+                        foreach (List<string> productInfo in cart)
                         {
-                            if (Int32.Parse(productInfo[0]) == product.ID)
+                            foreach (Product product in ProductComm.retrieveList())
                             {
-                                ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = Int32.Parse(productInfo[0]), HuurLengte = Int32.Parse(productInfo[2]), StartDate = productInfo[1], Cost = product.Cost };
-                                _context.Add(productNaarFactuur);
-                                await _context.SaveChangesAsync();
+                                if (Int32.Parse(productInfo[0]) == product.ID)
+                                {
+                                    ProductNaarFactuur productNaarFactuur = new ProductNaarFactuur { FactuurID = lastID, ProductID = Int32.Parse(productInfo[0]), HuurLengte = Int32.Parse(productInfo[2]), StartDate = productInfo[1], Cost = product.Cost };
+                                    _context.Add(productNaarFactuur);
+                                    await _context.SaveChangesAsync();
+                                }
                             }
                         }
-                    }                    
 
-                    //Emailer.FactuurGenerator(cart, factuur, user);
+                        //Emailer.FactuurGenerator(cart, factuur, user);
 
-                    cart = new List<List<string>>();
-                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-                    
+                        cart = new List<List<string>>();
+                        SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+
+                    }
                 }
-            }
-            else
-            {
-                //pop message niet genoeg punten/producten niet meer beschikbaar
-                ViewBag.Succes = false;
-            }
+                
+            }            
             return View();
         }
 
@@ -144,7 +146,7 @@ namespace RuilwinkelVerhuur.Controllers
                 }
             }
             
-            PuntenComm.RefundProduct(costs, user.WalletID);
+            await PuntenComm.AddPoints(costs, user.ID);
             ProductComm.SetProductsAvailable(productIDs);
             _context.Factuur.Remove(factuur);
             await _context.SaveChangesAsync();
@@ -154,15 +156,14 @@ namespace RuilwinkelVerhuur.Controllers
         {
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user"); // get user form the session
             List<Product> products = ProductComm.retrieveList(); // get the list of all products
-            ProductNaarFactuur productNaarFactuur = await _context.ProductNaarFactuur.FindAsync(id); // find the productnaarfactuur with id parameter
-            Product refundedProduct = new Product();
+            ProductNaarFactuur productNaarFactuur = await _context.ProductNaarFactuur.FindAsync(id); // find the productnaarfactuur with id parameter            
             Factuur factuur = await _context.Factuur.FindAsync(productNaarFactuur.FactuurID); // find the factuur that contains our productnaarfactuur
             List<int> productID = new List<int>();
             List<ProductNaarFactuur> productNaarFactuurTable = await _context.ProductNaarFactuur.ToListAsync(); // get productnaarfactuurtable
             List<ProductNaarFactuur> productNaarFactuurInFactuur = new List<ProductNaarFactuur>();        
 
             
-            PuntenComm.RefundProduct(refundedProduct.Cost, user.WalletID);
+            await PuntenComm.AddPoints(productNaarFactuur.Cost, user.ID);
             ProductComm.SetProductsAvailable(productID);
             _context.ProductNaarFactuur.Remove(productNaarFactuur);
             await _context.SaveChangesAsync();
