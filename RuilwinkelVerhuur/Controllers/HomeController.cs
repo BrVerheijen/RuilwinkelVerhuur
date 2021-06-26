@@ -101,9 +101,11 @@ namespace RuilwinkelVerhuur.Controllers
                         await _context.SaveChangesAsync();
 
                         List<Factuur> list = await _context.Factuur.ToListAsync();
+                        List<int> emailerList = new List<int>();
                         int lastID = list[list.Count - 1].ID;
                         foreach (List<string> productInfo in cart)
                         {
+                            emailerList.Add(Int32.Parse(productInfo[0]));
                             foreach (Product product in ProductComm.retrieveList())
                             {
                                 if (Int32.Parse(productInfo[0]) == product.ID)
@@ -114,8 +116,7 @@ namespace RuilwinkelVerhuur.Controllers
                                 }
                             }
                         }
-
-                        //Emailer.FactuurGenerator(cart, factuur, user);
+                        Emailer.FactuurGenerator(emailerList, factuur, user);
 
                         cart = new List<List<string>>();
                         SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
