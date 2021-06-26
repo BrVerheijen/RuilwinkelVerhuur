@@ -53,7 +53,7 @@ namespace RuilwinkelVerhuur.Models.Classes
 
             foreach (var productid in cart)
             {
-                foreach (var product in ProductComm.retrieveList())
+                foreach (var product in ProductComm.retrieveList().Result)
                 {
                     if (product.ID == productid)
                     {

@@ -4,7 +4,7 @@
 @{
 
     var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
-    var productlisttemp = ProductComm.retrieveList();
+    var productlisttemp = ProductComm.retrieveList().Result;
     var productlist = new List<Product> { };
     
     foreach (List<String> i in ViewBag.cart)

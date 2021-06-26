@@ -4,7 +4,7 @@
 
 
 @{
-    var productList = ProductComm.retrieveList();
+    var productList = ProductComm.retrieveList().Result;
     int userID = ViewBag.userID;
     var factuurlist = new List<Factuur> { };
     foreach (var item in Model.FacturenViewModel)

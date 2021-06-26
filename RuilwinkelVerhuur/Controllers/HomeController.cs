@@ -92,7 +92,7 @@ namespace RuilwinkelVerhuur.Controllers
                 await PuntenComm.SubstractPoints(user.ID, id);
                 if (!PuntenComm.Error)
                 {
-                    ProductComm.SetProductsUnavailable(cart);
+                    await ProductComm.SetProductsUnavailable(cart, user.Name);
                     ViewBag.Punten = true;
                     Factuur factuur = new Factuur { UserID = user.ID, Date = DateTime.Now.ToShortDateString() };
                     if (ModelState.IsValid)
@@ -106,7 +106,7 @@ namespace RuilwinkelVerhuur.Controllers
                         foreach (List<string> productInfo in cart)
                         {
                             emailerList.Add(Int32.Parse(productInfo[0]));
-                            foreach (Product product in ProductComm.retrieveList())
+                            foreach (Product product in ProductComm.retrieveList().Result)
                             {
                                 if (Int32.Parse(productInfo[0]) == product.ID)
                                 {
@@ -133,7 +133,7 @@ namespace RuilwinkelVerhuur.Controllers
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user"); // get user form the session
             Factuur factuur = await _context.Factuur.FindAsync(id); // find factuur with id parameter
             List<ProductNaarFactuur> productNaarFactuurTable = await _context.ProductNaarFactuur.ToListAsync(); // get productnaarfactuurtable
-            List<Product> products = ProductComm.retrieveList(); // get the list of all products
+            List<Product> products = ProductComm.retrieveList().Result; // get the list of all products
             List<int> productIDs = new List<int>();
             int costs = 0;
             foreach (ProductNaarFactuur productNaarFactuur in productNaarFactuurTable)
@@ -148,7 +148,7 @@ namespace RuilwinkelVerhuur.Controllers
             }
             
             await PuntenComm.AddPoints(costs, user.ID);
-            ProductComm.SetProductsAvailable(productIDs);
+            await ProductComm.SetProductsAvailable(productIDs);
             _context.Factuur.Remove(factuur);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -156,7 +156,7 @@ namespace RuilwinkelVerhuur.Controllers
         public async Task<IActionResult> RefundProduct(int id)
         {
             User user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user"); // get user form the session
-            List<Product> products = ProductComm.retrieveList(); // get the list of all products
+            List<Product> products = ProductComm.retrieveList().Result; // get the list of all products
             ProductNaarFactuur productNaarFactuur = await _context.ProductNaarFactuur.FindAsync(id); // find the productnaarfactuur with id parameter            
             Factuur factuur = await _context.Factuur.FindAsync(productNaarFactuur.FactuurID); // find the factuur that contains our productnaarfactuur
             List<int> productID = new List<int>();
@@ -165,7 +165,7 @@ namespace RuilwinkelVerhuur.Controllers
 
             
             await PuntenComm.AddPoints(productNaarFactuur.Cost, user.ID);
-            ProductComm.SetProductsAvailable(productID);
+            
             _context.ProductNaarFactuur.Remove(productNaarFactuur);
             await _context.SaveChangesAsync();
             productNaarFactuurTable = await _context.ProductNaarFactuur.ToListAsync();
@@ -178,8 +178,9 @@ namespace RuilwinkelVerhuur.Controllers
                     productNaarFactuurInFactuur.Add(product);
                 }
             }
+            await ProductComm.SetProductsAvailable(productID);
 
-            if(productNaarFactuurInFactuur.Count == 0)
+            if (productNaarFactuurInFactuur.Count == 0)
             {
                 _context.Factuur.Remove(factuur);
                 await _context.SaveChangesAsync();

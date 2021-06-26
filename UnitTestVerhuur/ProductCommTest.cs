@@ -21,7 +21,7 @@ namespace UnitTestVerhuur
         public void RetrieveProductTest()
         {
             Product testproduct = ProductComm.retrieveProduct(1);
-            List<Product> products = ProductComm.retrieveList();
+            List<Product> products = ProductComm.retrieveList().Result;
             foreach(Product product in products)
             {
                 if (product.ID == 1)
