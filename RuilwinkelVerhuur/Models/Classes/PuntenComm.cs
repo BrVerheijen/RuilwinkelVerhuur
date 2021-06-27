@@ -21,7 +21,7 @@ namespace RuilwinkelVerhuur.Models.Classes
         public static async Task<Uri> SubstractPoints(int userID, int cost)
         {
             PuntenComm obj = new() { AccountID = userID, Points = cost};
-            string json = JsonSerializer.Serialize(obj);            
+            JsonSerializer.Serialize(obj);            
             HttpResponseMessage response = await client.PutAsJsonAsync("https://devopspuntenbeheer.azurewebsites.net/huren/{{AccountID}}", obj);
             Error = false;
             try 
@@ -41,7 +41,7 @@ namespace RuilwinkelVerhuur.Models.Classes
         public static async Task<Uri> AddPoints(int cost, int userID)
         {
             PuntenComm obj = new() { AccountID = userID, Points = cost };
-            string json = JsonSerializer.Serialize(obj);
+            JsonSerializer.Serialize(obj);
             HttpResponseMessage response = await client.PutAsJsonAsync("https://devopspuntenbeheer.azurewebsites.net/intakeproducten/{{AccountID}}", obj);
             response.EnsureSuccessStatusCode();
             return response.Headers.Location;

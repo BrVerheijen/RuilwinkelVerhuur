@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -115,33 +117,35 @@ namespace RuilwinkelVerhuur.Models.Classes
         }
 
         //function that tells productbeheer to set items in cart to unavailable
-        public static async Task<Uri> SetProductsUnavailable(List<List<string>> cart, string name)
-        {            
-            HttpResponseMessage response = new HttpResponseMessage();
-            foreach(List<string> productInfo in cart)
-            {
-                ProductComm obj = new() { ArticleID = 12, naam = "NEGA CHIN", status = 0 };
-                string json = JsonSerializer.Serialize(obj);
-                response = await client.PutAsJsonAsync("https://ruilwinkelvaalsproductbeheer.azurewebsites.net/api/Article/UpdateArticleStatus", obj);
-                               
-                response.EnsureSuccessStatusCode();
-                
-            }
+        public static async Task<Uri> SetProductUnavailable(int productID, string name)
+        {   
+            ProductComm obj = new() { ArticleID = productID, naam = name, status = 0 };
+            
+
+            var jsonString = JsonConvert.SerializeObject(obj);
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PatchAsync("https://ruilwinkelvaalsproductbeheer.azurewebsites.net/api/Article/UpdateArticleStatus", content);
+
+            response.EnsureSuccessStatusCode();
+            
             return response.Headers.Location;           
         }
 
-        public static async Task<Uri> SetProductsAvailable(List<int> order)
+        public static async Task<Uri> SetProductAvailable(int productID)
         {
-            HttpResponseMessage response = new HttpResponseMessage();
-            foreach (int id in order)
-            {
-                ProductComm obj = new() { ArticleID = id, status = 1 };
-                string json = JsonSerializer.Serialize(obj);
-                response = await client.PutAsJsonAsync("https://ruilwinkelvaalsproductbeheer.azurewebsites.net/api/Article/UpdateArticleStatus", obj);
 
-                response.EnsureSuccessStatusCode();
+            ProductComm obj = new() { ArticleID = productID, status = 1 };
+            
 
-            }
+            var jsonString = JsonConvert.SerializeObject(obj);
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PatchAsync("https://ruilwinkelvaalsproductbeheer.azurewebsites.net/api/Article/UpdateArticleStatus", content);
+
+            response.EnsureSuccessStatusCode();
+
+            
             return response.Headers.Location;
         }
     }

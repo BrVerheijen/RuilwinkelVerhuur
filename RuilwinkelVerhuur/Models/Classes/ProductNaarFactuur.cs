@@ -19,5 +19,9 @@ namespace RuilwinkelVerhuur.Models.Classes
         public int HuurLengte { get; set; }
 
         public int Cost { get; set; }
+
+        public string ProductPicture { get; set; }
+
+        public string ProductName { get; set; }
     }
 }
