@@ -74,14 +74,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => product.Cost)
                     </td>
-                    @if (product.Availability == true)
-                    {
-                        <td>Beschikbaar</td>
-                    }
-                    @if (product.Availability == false)
-                    {
-                        <td>Niet Beschikbaar</td>
-                    }
+                    
                     <td>
                         <form action="@Url.Action("Index", "Detail", new { id = product.ID })">
                             <input type="submit" value="Details" />

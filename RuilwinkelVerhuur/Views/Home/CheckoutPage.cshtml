@@ -4,7 +4,7 @@
 @{
 
     var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
-    var productlisttemp = ProductComm.retrieveList();
+    var productlisttemp = ProductComm.retrieveList().Result;
     var productlist = new List<Product> { };
     
     foreach (List<String> i in ViewBag.cart)
@@ -58,8 +58,8 @@
                         @Html.DisplayFor(modelItem => product.Cost)
                     </td>
                     <td>
-                        <form action="@Url.Action("DeleteFromCart", "Home", new { id = product.ID })" onSubmit="if(!confirm('Wil je zeker het product verwijderen?')){return false;}">
-                            <input type="submit" value="Delete" />
+                        <form action="@Url.Action("DeleteFromCart", "Home", new { id = product.ID })" onSubmit="if(!confirm('Weet je zeker dat je het product wilt verwijderen?')){return false;}">
+                            <input type="submit" value="Verwijder" />
                         </form>
                     </td>
                 </tr>

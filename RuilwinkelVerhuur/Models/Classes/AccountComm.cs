@@ -15,5 +15,6 @@ namespace RuilwinkelVerhuur.Models.Classes
             User currentUser = new User(1, "Billy", "nathangroenveld3@gmail.com");
             return currentUser;     
         }
+
     }
 }
