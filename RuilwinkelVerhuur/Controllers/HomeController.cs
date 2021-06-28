@@ -30,7 +30,7 @@ namespace RuilwinkelVerhuur.Controllers
                 //TODO send user back to login
                 User currentUser = AccountComm.retrieveUser();
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "user", currentUser);
-                ViewBag.user = currentUser;
+                ViewBag.user = currentUser;                
             }
             else
             {
@@ -39,6 +39,17 @@ namespace RuilwinkelVerhuur.Controllers
             }
 
             return View();
+        }
+
+        public IActionResult LogOut()
+        {
+            //cookie leeg maken
+            return Redirect("https://testeppie20210607124001.azurewebsites.net/");            
+        }
+
+        public IActionResult Points()
+        {            
+            return Redirect("http://google.nl");
         }
 
         //send to inventorypage with categoryID
@@ -101,13 +112,14 @@ namespace RuilwinkelVerhuur.Controllers
                         await _context.SaveChangesAsync();
 
                         List<Factuur> list = await _context.Factuur.ToListAsync();
-                        List<int> emailerList = new List<int>();
+                        
                         List<Product> productList = ProductComm.retrieveList().Result;
+                        List<ProductNaarFactuur> productNaarFactuurList = new List<ProductNaarFactuur>();
                         int lastID = list[list.Count - 1].ID;
                         foreach (List<string> productInfo in cart)
                         {
                             
-                            emailerList.Add(Int32.Parse(productInfo[0]));
+                            
                             foreach (Product product in productList)
                             {
                                 if (Int32.Parse(productInfo[0]) == product.ID)
@@ -117,11 +129,12 @@ namespace RuilwinkelVerhuur.Controllers
                                         ProductPicture = product.Picture };
                                     _context.Add(productNaarFactuur);
                                     await _context.SaveChangesAsync();
+                                    productNaarFactuurList.Add(productNaarFactuur);
                                 }
                             }
                             await ProductComm.SetProductUnavailable(Int32.Parse(productInfo[0]), user.Name);
                         }
-                        Emailer.FactuurGenerator(emailerList, factuur, user);
+                        Emailer.FactuurGenerator(productNaarFactuurList, factuur, user);
 
                         cart = new List<List<string>>();
                         SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
@@ -189,6 +202,10 @@ namespace RuilwinkelVerhuur.Controllers
             {
                 _context.Factuur.Remove(factuur);
                 await _context.SaveChangesAsync();
+            }
+            else
+            {
+                Emailer.FactuurGenerator(productNaarFactuurInFactuur, factuur, user);
             }
             return RedirectToAction("Index");
         }

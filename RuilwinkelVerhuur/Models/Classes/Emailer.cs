@@ -40,7 +40,7 @@ namespace RuilwinkelVerhuur.Models.Classes
             catch (Exception) { }
         }
 
-        public static void FactuurGenerator(List<int> cart, Factuur factuur, User user)
+        public static void FactuurGenerator(List<ProductNaarFactuur> cart, Factuur factuur, User user)
         {
 
 
@@ -48,20 +48,15 @@ namespace RuilwinkelVerhuur.Models.Classes
             messageBody = messageBody + "<h2>Datum: " + factuur.Date + "</h2>";
             messageBody = messageBody + "<h4>Naam: " + user.Name + "</h4>";
             messageBody = messageBody + "<h4>GebruikersID: " + user.ID + "</h4> </br> </br>";
-            messageBody = messageBody + "<table> <thead> <tr> <th> Naam </th> <th> Afbeelding </th> <th> Categorie </th> <th> Prijs </th> </tr> </thead> <tbody>";
+            messageBody = messageBody + "<table> <thead> <tr> <th> Naam </th> <th> Afbeelding </th> <th> Prijs </th> </tr> </thead> <tbody>";
 
 
-            foreach (var productid in cart)
+            foreach (var product in cart)
             {
-                foreach (var product in ProductComm.retrieveList().Result)
-                {
-                    if (product.ID == productid)
-                    {
-                        string productpicture = "'" + product.Picture + "'";
+                string productpicture = "'" + product.ProductPicture + "'";
 
-                        messageBody = messageBody + "<tr> <td>" + product.Name + "</td> <td> <img src =" + productpicture + " height ='150'/> </td> <td>" + product.Category + "</td> <td>" + product.Cost + "</td> </tr>";
-                    }
-                }
+                messageBody = messageBody + "<tr> <td>" + product.ProductName + "</td> <td> <img src =" 
+                    + productpicture + " height ='150'/> </td> <td>" + product.Cost + "</td> </tr>";
             }
 
             messageBody = messageBody + "<img src='https://pastepixel.com/image/5a4dnez9FzzCbCwSv52P.png' width='0' height='0'>";

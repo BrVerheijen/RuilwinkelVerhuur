@@ -58,7 +58,7 @@
                         @Html.DisplayFor(modelItem => product.Cost)
                     </td>
                     <td>
-                        <form action="@Url.Action("DeleteFromCart", "Home", new { id = product.ID })" onSubmit="if(!confirm('Wil je zeker het product verwijderen?')){return false;}">
+                        <form action="@Url.Action("DeleteFromCart", "Home", new { id = product.ID })" onSubmit="if(!confirm('Weet je zeker dat je het product wilt verwijderen?')){return false;}">
                             <input type="submit" value="Verwijder" />
                         </form>
                     </td>
