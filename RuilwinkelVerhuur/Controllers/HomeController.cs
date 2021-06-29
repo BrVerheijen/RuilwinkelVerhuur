@@ -29,7 +29,7 @@ namespace RuilwinkelVerhuur.Controllers
             if (SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user") == null)
             {                
                 //TODO send user back to login
-                User currentUser = AccountComm.retrieveUser().Result;
+                User currentUser = AccountComm.retrieveUser();
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "user", currentUser);
                 ViewBag.user = currentUser;                
             }

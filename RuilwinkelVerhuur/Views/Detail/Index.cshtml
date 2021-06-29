@@ -64,13 +64,15 @@
         @Html.LabelFor(model => model.Date, new { htmlAttributes = new { @class = "control-label" } })
         @Html.TextBoxFor(model => model.Date, new { @class = "from-control mydatepicker", @placeholder = "dd.mm.yy" })
 
-        <form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
-            <input type="submit" value="Toevoegen aan winkelmandje"/>
-        </form>
+        
     </div>
 </div>
        
 }
+
+<form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
+    <input type="submit" value="Toevoegen aan winkelmandje" />
+</form>
 
 <link href="~/lib/jqueryui/themes/blitzer/jquery-ui.min.css" rel="stylesheet" />
 @section Scripts
