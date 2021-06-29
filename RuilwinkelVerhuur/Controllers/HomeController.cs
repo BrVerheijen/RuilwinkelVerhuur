@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 
@@ -24,9 +25,9 @@ namespace RuilwinkelVerhuur.Controllers
 
         //Set user when you visit the homepage and the session is empty
         public IActionResult Index()
-        {
+        {                        
             if (SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user") == null)
-            {
+            {                
                 //TODO send user back to login
                 User currentUser = AccountComm.retrieveUser();
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "user", currentUser);
