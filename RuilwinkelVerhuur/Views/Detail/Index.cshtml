@@ -42,25 +42,31 @@
 </head>
 
 
-<h3>@selectedproduct.Name</h3>
-<h5 style="color:cornflowerblue">@selectedproduct.Cost Punten</h5>
 
-
-
-<p> <img src="@selectedproduct.Picture" height="150" /> </p>
-<h5>Beschrijving:</h5>
-<p>
-    <h5>Selecteer de huurlengte in dagen:</h5>
-    @Html.DropDownList("LoanLength", l1, "Selecteer de huurlengte in dagen");
-    @*<select asp-items="@(new SelectList(ViewBag.Dropdown))"></select>*@
-</p>
 
 @using (Html.BeginForm())
 {
 <div class="form-horizontal col-md-6">
     <div class="form-group">
+        <h3>@selectedproduct.Name</h3>
+        <h5>Prijs:</h5>
+        <h5 style="color:cornflowerblue">@selectedproduct.Cost Punten</h5>
+
+        <p> <img src="@selectedproduct.Picture" height="150" /> </p>
+        <h5>Beschrijving:</h5>
+        <h5 style="color:cornflowerblue">@selectedproduct.Description</h5>
+        <p>
+            <h5>Selecteer de huurlengte in dagen:</h5>
+            @Html.DropDownList("LoanLength", l1, "Selecteer de huurlengte in dagen")
+            @*<select asp-items="@(new SelectList(ViewBag.Dropdown))"></select>*@
+        </p>
+
         @Html.LabelFor(model => model.Date, new { htmlAttributes = new { @class = "control-label" } })
         @Html.TextBoxFor(model => model.Date, new { @class = "from-control mydatepicker", @placeholder = "dd.mm.yy" })
+
+        <form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
+            <input type="submit" value="Toevoegen aan winkelmandje"/>
+        </form>
     </div>
 </div>
        
@@ -100,7 +106,5 @@
     </script>
 }
 
-<form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
-    <input type="submit" value="Toevoegen aan winkelmandje" />
-</form>
+
 

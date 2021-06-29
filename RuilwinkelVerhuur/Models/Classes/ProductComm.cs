@@ -35,7 +35,7 @@ namespace RuilwinkelVerhuur.Models.Classes
                 foreach(Artikel artikel in artikelList)
                 {
                     publicProductList.Add(new Product { ID = artikel.articleID, Name = artikel.productname, Category = artikel.categoryname, 
-                        Cost = artikel.points, Picture = artikel.image });
+                        Cost = artikel.points, Picture = artikel.image, Description = artikel.description });
                 }
             }          
             
