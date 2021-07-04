@@ -1,14 +1,10 @@
 ﻿
 @namespace RuilwinkelVerhuur.Models.Classes
-@model RuilwinkelVerhuur.Models.Classes.Datepicker
+@model Datepicker
 
 @{
     var data = ViewBag.Message;
-    Product selectedproduct = ProductComm.retrieveProduct(data);
-    List<SelectListItem> l1 = new List<SelectListItem>();
-    l1.Add(new SelectListItem() { Text = "1", Value = "1" });
-    l1.Add(new SelectListItem() { Text = "2", Value = "2" });
-    List<int> l2 = ViewBag.Dropdown;
+    Product selectedproduct = ProductComm.retrieveProduct(data);    
 }
 
 
@@ -57,22 +53,22 @@
         <h5 style="color:cornflowerblue">@selectedproduct.Description</h5>
         <p>
             <h5>Selecteer de huurlengte in dagen:</h5>
-            @Html.DropDownList("LoanLength", l1, "Selecteer de huurlengte in dagen")
-            @*<select asp-items="@(new SelectList(ViewBag.Dropdown))"></select>*@
+            @Html.DropDownListFor(model => model.LoanLength, new SelectList(ViewBag.DropDown), "Selecteer de huurlengte in dagen")          
+            
         </p>
-
-        @Html.LabelFor(model => model.Date, new { htmlAttributes = new { @class = "control-label" } })
-        @Html.TextBoxFor(model => model.Date, new { @class = "from-control mydatepicker", @placeholder = "dd.mm.yy" })
+                
+        <h5>Selecteer wanneer U het artikel wilt ophalen.</h5>
+        @Html.TextBoxFor(model => model.Date, new { @class = "from-control mydatepicker", @placeholder = "dd.mm.jjjj" })
 
         
+    </div>
+
+    <div class="from-group">
+        <input type ="submit" value="Toevoegen aan winkelmandje" class="btn btn-primary" />
     </div>
 </div>
        
 }
-
-<form action="@Url.Action("AddToCart", "Detail", new { id = selectedproduct.ID })">
-    <input type="submit" value="Toevoegen aan winkelmandje" />
-</form>
 
 <link href="~/lib/jqueryui/themes/blitzer/jquery-ui.min.css" rel="stylesheet" />
 @section Scripts
@@ -94,7 +90,7 @@
                 })
                 .next("button").button({
                     icons: { primary: "ui-icon-calendar" },
-                    label: "Select Date",
+                    label: "Selecteer een datum",
                     text: false
                 })
                 .addClass("btn btn-default")

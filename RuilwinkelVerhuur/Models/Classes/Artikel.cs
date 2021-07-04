@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace RuilwinkelVerhuur.Models.Classes
 {
+    //class that copies the datastructure of productbeheer
     public class Artikel
     {
         public string productname { get; set; }

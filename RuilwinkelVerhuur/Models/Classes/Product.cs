@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace RuilwinkelVerhuur.Models.Classes
 {
+    //class to store the products
     public class Product
     {
         public int ID { get; set; }

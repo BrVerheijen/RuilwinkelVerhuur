@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace RuilwinkelVerhuur.Models.Classes
 {    
+    //class that stores the picked date and loanlength when adding an item to the cart in detailpage
     public class Datepicker
     {
-        public List<SelectListItem> LoanLength { get; set; }
+        public int LoanLength { get; set; }
+
         public  DateTime Date { get; set; }
 
         public int ID { get; set; }

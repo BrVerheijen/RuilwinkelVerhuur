@@ -73,7 +73,10 @@ namespace RuilwinkelVerhuur.Controllers
             {
                 List<List<string>> cart = SessionHelper.GetObjectFromJson<List<List<string>>>(HttpContext.Session, "cart");
                 ViewBag.cart = cart;
+                Debug.WriteLine(cart[0][1]);
+                Debug.WriteLine(cart[0][2]);
             }
+            
 
             return View(await _context.Factuur.ToListAsync());
         }        

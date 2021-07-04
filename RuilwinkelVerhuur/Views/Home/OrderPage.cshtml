@@ -40,22 +40,7 @@
             <form action="@Url.Action("RefundFactuur", "Home", new { id = factuur.ID})" onSubmit="if(!confirm('Weet u zeker dat u de order wilt annuleren?')){return false;}">
                 <input type="submit" value="Order annuleren" />
             </form>
-            @*<p style="background-color:lightgray;">
-                    Factuur ID: @factuur.ID
-                    <button onclick="CancelOrderFunction()" class="ex1">Annuleer</button>
-                    <script>
-                        function CancelOrderFunction() {
-                            var txt;
-                            var r = confirm("Weet u zeker dat u deze order wil verwijderen");
-                            if (r == true) {
-                                txt = "Order is verwijderd";
-                            }
-
-                        }
-                    </script>
-
-
-                </p>*@
+            
 
             <table class="table" style="margin: 0px 0px 60px 0px;">
                 <thead>
@@ -104,20 +89,7 @@
                                         <td>
                                             <form action="@Url.Action("RefundProduct", "Home", new { id = item.ID})" onSubmit="if(!confirm('Weet u zeker dat u het product wilt annuleren?')){return false;}">
                                                 <input type="submit" value="Product annuleren" />
-                                            </form>
-
-                                            @*<button onclick="CancelProductFunction()">Annuleer</button>
-                                            <script>
-                                                function CancelProductFunction() {
-                                                    var txt;
-                                                    var r = confirm("Weet u zeker dat je dit wilt verwijderen");
-                                                    if (r == true) {
-                                                        txt = "Product is  verwijderd";
-                                                    }
-
-
-                                                }
-                                            </script>*@
+                                            </form>                                            
                                         </td>
                                     </tr>
 
