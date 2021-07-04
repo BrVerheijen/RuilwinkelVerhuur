@@ -71,7 +71,7 @@ namespace RuilwinkelVerhuur.Models.Classes
                     catogoryList.Add(product.Category);
                 }
             }
-            //TO DO ask productbeheer to return a list with unique catogories
+            
             return catogoryList;
         }
 
@@ -91,8 +91,7 @@ namespace RuilwinkelVerhuur.Models.Classes
 
         //function that asks productbeheer if the items in the cart are still available
         public static bool CheckCartAvailable(List<List<string>> cart)
-        {
-            //TODO ask products to return true or false
+        {            
             List<Product> products = ProductComm.retrieveList().Result;
             int cartCounter = cart.Count();
             foreach(List<string> productInfo in cart)
@@ -116,7 +115,7 @@ namespace RuilwinkelVerhuur.Models.Classes
             }                      
         }
 
-        //function that tells productbeheer to set items in cart to unavailable
+        //function that tells productbeheer to set product to unavailable
         public static async Task<Uri> SetProductUnavailable(int productID, string name)
         {   
             ProductComm obj = new() { ArticleID = productID, naam = name, status = 0 };
@@ -132,6 +131,7 @@ namespace RuilwinkelVerhuur.Models.Classes
             return response.Headers.Location;           
         }
 
+        //function that tells productbeheer to set product to available
         public static async Task<Uri> SetProductAvailable(int productID)
         {
 

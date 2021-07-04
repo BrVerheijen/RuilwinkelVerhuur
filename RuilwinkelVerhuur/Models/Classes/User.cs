@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace RuilwinkelVerhuur.Models.Classes
 {
+    //class to store user
     public class User
     {
         public User(int id, string name, string email)

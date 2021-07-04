@@ -3,7 +3,7 @@
 
 @{
 
-    var catlist = new List<string> { "Elektronica", "Meubilair", "Kleren", "Curiosa" };
+    
     var productlisttemp = ProductComm.retrieveList().Result;
     var productlist = new List<Product> { };
     
@@ -76,18 +76,7 @@
                 <input type="submit" value="Checkout" />
             </form>
 
-            @*<button type="button" onclick="CheckOut()" class="btn btn-block btn-outline-primary btn-lg">CHECK OUT</button>
-                <script>
-                    function CheckOut() {
-                        var txt;
-                        var r = confirm("Weet u zeker dat u de bestelling wilt afronden?");
-                        if (r == true) {
-                            txt = "Check out is afgerond";
-                        }
-
-
-                    }
-                </script>*@
+            
         </div>
     </div>
 </div>

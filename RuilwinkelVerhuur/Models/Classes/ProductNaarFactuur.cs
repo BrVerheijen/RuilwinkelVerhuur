@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RuilwinkelVerhuur.Models.Classes
 {
+    //database class to store the orderinfo of a single product
     public class ProductNaarFactuur
     {
         [Key]

@@ -23,8 +23,9 @@ namespace RuilwinkelVerhuur.Models.Classes
             //{
 
             //}
-            //TODO vraag account id op van de gebruiker van de huidige sessie
-                User currentUser = new User(1, "Billy", "nathangroenveld3@gmail.com");
+            
+            //The user is hardcoded because of an issue with requesting cookies form another application within Azure
+            User currentUser = new User(1, "Bill Jansen", "nathangroenveld3@gmail.com");
              
             return currentUser;     
         }

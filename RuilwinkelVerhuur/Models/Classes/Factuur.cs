@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RuilwinkelVerhuur.Models.Classes
 {
+    //Database class to store orders
     public class Factuur
     {
         [Key]

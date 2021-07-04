@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace RuilwinkelVerhuur.Models.Classes
 {
+    //class for sending emails with a factuur to the user
     public class Emailer
     {
 
